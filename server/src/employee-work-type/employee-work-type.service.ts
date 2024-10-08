@@ -14,7 +14,7 @@ export class EmployeeWorkTypeService {
     return employeeWorkType;
   }
 
-  async findAllEmployeeWorkType() {
+  async getAllEmployeeWorkType() {
     const employeeWorkTypes = await this.employeeWorkTypeRepository.find();
 
     return employeeWorkTypes;

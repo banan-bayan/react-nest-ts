@@ -14,10 +14,12 @@ export class EmployeeTypeService {
     return employeeType;
   }
 
-  async findAllEmployeeType() {
+  async getAllEmployeeType() {
     const employeeTypes = await this.EmployeeTypeRepository.find();
 
     return employeeTypes;
   };
+
+  
 
 }

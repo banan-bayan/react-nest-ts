@@ -1,5 +1,5 @@
-const Status = 'h'
+const Status = 'New'
 const EmptyPlanMarks = []
-const isDisable = (Status === 'New' && EmptyPlanMarks?.length);
+const isDisable = (Status === 'New' && !EmptyPlanMarks?.length);
 
 console.log('заблокировано? : ', !isDisable)

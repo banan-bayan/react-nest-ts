@@ -14,7 +14,7 @@ export class EmployeeSlotScheduleService {
      return employeeSlotSchedule;
    }
 
-   async getAllEmployeeSlotSchedule() {
+   async getAllEmployeeSlotSchedules() {
 
     const employeeSlotSchedules = this.employeeSlotScheduleRepository.find()
 

@@ -7,21 +7,19 @@ import { User } from './users.model';
 @ApiTags('Пользователи')
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) {};
-   
-  @ApiOperation({summary: 'создать клиента'})
-  @ApiResponse({status: 200, type: User})
+  constructor(private readonly usersService: UsersService) {};
+
+  @ApiOperation({ summary: 'Создание нового пользователя' })
+  @ApiResponse({ status: 201, type: User, description: 'Пользователь успешно создан' })
   @Post()
   create(@Body() userDto: CreateUserDto) {
-
     return this.usersService.createUser(userDto);
   }
 
-  @ApiOperation({summary: 'получить всех пользователей'})
-  @ApiResponse({status: 200, type: [User]})
+  @ApiOperation({ summary: 'Получение списка всех пользователей' })
+  @ApiResponse({ status: 200, type: [User], description: 'Список пользователей успешно получен' })
   @Get()
   getAll() {
-    
-    return this.usersService.getAllUser
+    return this.usersService.getAllUser();
   }
 }
