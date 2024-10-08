@@ -17,6 +17,8 @@ import { EmployeeModule } from './employee/employee.module';
 import { EmployeeBaseScheduleModule } from './employee-base-schedule/employee-base-schedule.module';
 import { EmployeeSlotScheduleModule } from './employee-slot-schedule/employee-slot-schedule.module';
 import { WorkRequestModule } from './work-request/work-request.module';
+import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   controllers: [], // чтобы заработал контроллер его регаем в модуле
@@ -54,6 +56,7 @@ import { WorkRequestModule } from './work-request/work-request.module';
     EmployeeBaseScheduleModule,
     EmployeeSlotScheduleModule,
     WorkRequestModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

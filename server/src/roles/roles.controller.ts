@@ -1,4 +1,4 @@
-import { Controller, Body, Get, Post } from '@nestjs/common';
+import { Controller, Body, Get, Post, Param } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { Role } from './roles.model';
 import { ApiResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -20,6 +20,15 @@ export class RolesController {
   @ApiResponse({ status: 200, type: [Role], description: 'Список ролей успешно получен' })
   @Get()
   getAll() {
+    
     return this.rolesService.getAllRoles();
+  }
+
+  @ApiOperation({ summary: 'Получение роли' })
+  @ApiResponse({ status: 200, type: [Role], description: 'Роль успешно получена' })
+  @Get('/:value')
+  getByValue(@Param('value') value: string) {
+
+    return this.rolesService.getRoleByRole(value);
   }
 }

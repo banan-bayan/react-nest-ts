@@ -6,17 +6,25 @@ import { CreateRoleDto } from './dto/create-role.dto';
 
 @Injectable()
 export class RolesService {
-  constructor(@InjectRepository(Role) private roleRepository: Repository<Role>){}
+  constructor(
+    @InjectRepository(Role) private roleRepository: Repository<Role>,
+  ) {}
 
   async createRole(dto: CreateRoleDto) {
-    const role = await this.roleRepository.create(dto)
+    const role = await this.roleRepository.create(dto);
 
-    return role
+    return role;
   }
 
   async getAllRoles() {
-    const roles = await this.roleRepository.find()
+    const roles = await this.roleRepository.find();
 
-    return roles
+    return roles;
+  }
+
+  async getRoleByRole(value: string) {
+    const role = await this.roleRepository.findOne({ where: { value } });
+
+    return role;
   }
 }
