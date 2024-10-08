@@ -12,6 +12,6 @@ export class EmployeeType {
   @Column({ type: 'varchar', unique: true })
   title: string;
 
-  @OneToMany(() => EmployeeWorkType, (workType) => workType.employeeType)
-  works: EmployeeWorkType[];
+  // @OneToMany(() => EmployeeWorkType, (workType) => workType.employeeType)
+  // works: EmployeeWorkType[];
 }

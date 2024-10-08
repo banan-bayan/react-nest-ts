@@ -14,8 +14,8 @@ export class Employee {
   @Column({ type: 'varchar' })
   name: string;
 
-  @ManyToOne(() => EmployeeType, (employeeType) => employeeType.works)
-  type: EmployeeType;
+  // @ManyToOne(() => EmployeeType, (employeeType) => employeeType.works, { lazy: true })
+  // type: EmployeeType;
 
   @OneToMany(() => EmployeeSlotSchedule, (slotSchedule) => slotSchedule.employee)
   slotSchedules: EmployeeSlotSchedule[];
