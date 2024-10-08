@@ -5,6 +5,7 @@ import { EmployeeSlotSchedule } from 'src/employee-slot-schedule/employee-slot-s
 
 @Entity({ name: 'employees' })
 export class Employee {
+  
   @ApiProperty({ example: 1, description: 'Идентификатор сотрудника' })
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
