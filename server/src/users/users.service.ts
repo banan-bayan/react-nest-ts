@@ -10,11 +10,11 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-    private roleService: RolesService
+    private roleService: RolesService,
   ) {}
 
-  async createUser(dto: CreateUserDto) {
-    const user = this.usersRepository.create(dto);
+  async createUser(userDto: CreateUserDto) {
+    const user = this.usersRepository.create(userDto);
     const role = await this.roleService.getRoleByRole('user');
     user.roles = [role];
     await this.usersRepository.save(user);
@@ -22,7 +22,13 @@ export class UsersService {
   }
 
   async getAllUser() {
-    const users = await this.usersRepository.find({ relations: ['roles']});  // Загружаем связанные роли
+    const users = await this.usersRepository.find({ relations: ['roles'] });
     return users;
+  }
+
+  async getUserByEmail(email: string): Promise<User | null> {
+    const user = await this.usersRepository.findOne({ where: { email }, relations: ['roles'] });
+
+    return user || null;
   }
 }

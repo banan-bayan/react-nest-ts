@@ -18,7 +18,6 @@ import { EmployeeBaseScheduleModule } from './employee-base-schedule/employee-ba
 import { EmployeeSlotScheduleModule } from './employee-slot-schedule/employee-slot-schedule.module';
 import { WorkRequestModule } from './work-request/work-request.module';
 import { AuthModule } from './auth/auth.module';
-import { AuthModule } from './auth/auth.module';
 
 @Module({
   controllers: [], // чтобы заработал контроллер его регаем в модуле

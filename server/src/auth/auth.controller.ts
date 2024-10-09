@@ -2,33 +2,58 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
-@Controller('auth')
-export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  @ApiTags('Авторизация')
+  @Controller('auth')
+  export class AuthController {
+    constructor(private readonly authService: AuthService) {}
+    
+    @ApiOperation({})
+    @ApiResponse({})
+    @Post('/login')
+    login(@Body() userDto: CreateUserDto) {
 
-  @Post()
-  create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
-  }
+      return this.authService.login(userDto);
+    }
+  
+    @ApiOperation({})
+    @ApiResponse({})
+    @Post('registration')
+    registration(@Body() userDto: CreateUserDto) {
 
-  @Get()
-  findAll() {
-    return this.authService.findAll();
-  }
+      return this.authService.registration(userDto);
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
-  }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
-  }
+  // @ApiOperation({})
+  // @ApiResponse({})
+  // @Post()
+  // create(@Body() createAuthDto: CreateAuthDto) {
+  //   return this.authService.create(createAuthDto);
+  // }
+
+  // @ApiOperation({})
+  // @ApiResponse({})
+  // @Get()
+  // findAll() {
+  //   return this.authService.findAll();
+  // }
+
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.authService.findOne(+id);
+  // }
+
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
+  //   return this.authService.update(+id, updateAuthDto);
+  // }
+
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.authService.remove(+id);
+  // }
 }
