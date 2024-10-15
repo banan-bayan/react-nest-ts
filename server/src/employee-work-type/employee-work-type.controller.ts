@@ -5,7 +5,7 @@ import { CreateEmployeeWorkTypeDto } from './dto/create-employee-work-type.dto';
 import { EmployeeWorkType } from './employee-work-type.model';
 
 @ApiTags('Типы работ сотрудников')
-@Controller('employee-work-type')
+@Controller('api/employee-work-type')
 export class EmployeeWorkTypeController {
   constructor(private readonly employeeWorkTypeService: EmployeeWorkTypeService) {}
 

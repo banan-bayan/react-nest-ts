@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'ty
 import { EmployeeType } from 'src/employee-type/employee-type.model';
 import { EmployeeSlotSchedule } from 'src/employee-slot-schedule/employee-slot-schedule.model';
 
-@Entity({ name: 'api/employees' })
+@Entity({ name: 'employees' })
 export class Employee {
   
   @ApiProperty({ example: 1, description: 'Идентификатор сотрудника' })

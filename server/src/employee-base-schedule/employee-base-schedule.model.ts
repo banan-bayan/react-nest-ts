@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Employee } from 'src/employee/employee.model';
 
-@Entity({ name: 'api/employee_base_schedules' })
+@Entity({ name: 'employee_base_schedules' })
 export class EmployeeBaseSchedule {
 
   @ApiProperty({ example: 1, description: 'Идентификатор записи' })

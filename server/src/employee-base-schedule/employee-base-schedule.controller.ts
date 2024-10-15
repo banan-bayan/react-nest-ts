@@ -5,7 +5,7 @@ import { CreateEmployeeBaseScheduleDto } from './dto/create-employee-base-schedu
 import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 
 @ApiTags('Базовое расписание сотрудников')
-@Controller('employee-base-schedule')
+@Controller('api/employee-base-schedule')
 export class EmployeeBaseScheduleController {
   constructor(private readonly employeeBaseScheduleService: EmployeeBaseScheduleService) {}
 

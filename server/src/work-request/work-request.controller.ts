@@ -5,7 +5,7 @@ import { WorkRequest } from './work-request.model';
 import { CreateWorkRequestDto } from './dto/create-request-work.dto';
 
 @ApiTags('Заявки на работу')
-@Controller('work-request')
+@Controller('api/work-request')
 export class WorkRequestController {
   constructor(private readonly workRequestService: WorkRequestService) {}
 

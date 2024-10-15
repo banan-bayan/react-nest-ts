@@ -5,7 +5,7 @@ import { EmployeeSlotSchedule } from './employee-slot-schedule.model';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('Временной слот сотрудника')
-@Controller('employee-slot-schedule')
+@Controller('api/employee-slot-schedule')
 export class EmployeeSlotScheduleController {
   constructor(private readonly employeeSlotScheduleService: EmployeeSlotScheduleService) {}
 
