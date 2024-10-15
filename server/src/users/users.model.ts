@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
 import { Role } from 'src/roles/roles.model';
 
-@Entity({ name: 'users' })
+@Entity({ name: 'users', schema: 'user' })
 export class User {
   @ApiProperty({ example: '1', description: 'id' })
   @PrimaryGeneratedColumn({ type: 'int' })
