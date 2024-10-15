@@ -11,7 +11,7 @@ export enum WorkRequestStatus {
   DONE_NONPAID = 'DONE_NONPAID'
 }
 
-@Entity({ name: 'work_requests' })
+@Entity({ name: 'api/work_requests' })
 export class WorkRequest {
 
   @ApiProperty({ example: 1, description: 'id' })

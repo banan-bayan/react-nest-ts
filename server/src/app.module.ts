@@ -21,7 +21,7 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   controllers: [], // чтобы заработал контроллер его регаем в модуле
-  providers: [], // тут используется любой переиспользуемый компонент или сервисы с логикой
+  providers: [], // тут используется любой переиспользуемый компонент или сервисы с логикой (SERVICE)
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`
