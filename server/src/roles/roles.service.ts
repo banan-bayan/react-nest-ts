@@ -22,7 +22,7 @@ export class RolesService {
     return roles;
   }
 
-  async getRoleByRole(value: string) {
+  async getRoleByName(value: string) {
     const role = await this.roleRepository.findOne({ where: { value } });
 
     return role;

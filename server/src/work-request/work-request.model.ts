@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
 import { User  } from 'src/users/users.model';
 import { EmployeeSlotSchedule  } from 'src/employee-slot-schedule/employee-slot-schedule.model';
@@ -14,7 +13,6 @@ export enum WorkRequestStatus {
 @Entity({ name: 'work_requests', schema: 'user' })
 export class WorkRequest {
 
-  @ApiProperty({ example: 1, description: 'id' })
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
@@ -28,7 +26,6 @@ export class WorkRequest {
   @JoinTable()
   employeeWorkType: EmployeeWorkType[];
 
-  @ApiProperty({example: 'WAITING', description: 'Статус заявки'})
   @Column({
     type: 'enum',
     enum: WorkRequestStatus,

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.model';
 import { Repository } from 'typeorm';
@@ -14,21 +14,33 @@ export class UsersService {
   ) {}
 
   async createUser(userDto: CreateUserDto) {
-    const user = this.usersRepository.create(userDto);
-    const role = await this.roleService.getRoleByRole('user');
-    user.roles = [role];
-    await this.usersRepository.save(user);
-    return user;
+    const role = await this.roleService.getRoleByName('User');
+
+    if (!role) {
+      throw new BadRequestException();
+    }
+
+    const user = this.usersRepository.create({...userDto, roles: [role]});
+  
+    const newUser = await this.usersRepository.save(user);
+
+    return newUser;
   }
 
   async getAllUser() {
-    const users = await this.usersRepository.find({ relations: ['roles'] });
+    const users = await this.usersRepository.find({
+      relations: { roles: true },
+    });
+
     return users;
   }
 
-  async getUserByEmail(email: string): Promise<User | null> {
-    const user = await this.usersRepository.findOne({ where: { email }, relations: ['roles'] });
+  async getUserByEmail(email: string): Promise<User> {
+    const user = await this.usersRepository.findOne({
+      where: { email },
+      relations: { roles: true },
+    });
 
-    return user || null;
+    return user;
   }
 }

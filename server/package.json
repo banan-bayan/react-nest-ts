@@ -27,6 +27,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.4.2",
     "@nestjs/typeorm": "^10.0.2",
+    "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^2.4.3",
     "cross-env": "^7.0.3",
     "env": "^0.0.2",
