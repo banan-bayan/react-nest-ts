@@ -16,7 +16,7 @@ export class EmployeeWorkType {
   @Column({ type: 'float' })
   price: number;
 
-  // @ApiProperty({ description: 'Тип сотрудника, связанный с данной услугой' })
+  @ApiProperty({ description: 'Тип сотрудника, связанный с данной услугой', type: () => EmployeeType })
   @ManyToOne(() => EmployeeType, (employeeType) => employeeType.works)
   employeeType: EmployeeType;
 }

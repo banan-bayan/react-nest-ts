@@ -18,10 +18,11 @@ import { EmployeeBaseScheduleModule } from './employee-base-schedule/employee-ba
 import { EmployeeSlotScheduleModule } from './employee-slot-schedule/employee-slot-schedule.module';
 import { WorkRequestModule } from './work-request/work-request.module';
 import { AuthModule } from './auth/auth.module';
+import { SwaggerConfigService } from './swagger/swagger.service';
 
 @Module({
   controllers: [], // чтобы заработал контроллер его регаем в модуле
-  providers: [], // тут используется любой переиспользуемый компонент или сервисы с логикой (SERVICE)
+  providers: [SwaggerConfigService], // тут используется любой переиспользуемый компонент или сервисы с логикой (SERVICE)
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`
