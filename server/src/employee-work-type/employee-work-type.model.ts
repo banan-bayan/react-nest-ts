@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { EmployeeType } from 'src/employee-type/employee-type.model';
+import { EmployeeType } from 'src/employee-type/entities/employee-type.entity';
 
 @Entity({ name: 'employee_work_types', schema: 'employee' })
 export class EmployeeWorkType {

@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
-import { Employee } from './employee.model';
+import { Employee } from './entities/employee.entity';
 
 @ApiTags('Сотрудники')
 @Controller('api/employee')

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EmployeeType } from './employee-type.model';
+import { EmployeeType } from './entities/employee-type.entity';
 import { Repository } from 'typeorm';
 import { CreateEmployeeTypeDto } from './dto/create-employee-type.dto';
 

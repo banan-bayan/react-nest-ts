@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { WorkRequest } from './work-request.model';
+import { WorkRequest } from './entities/work-request.entity';
 import { CreateWorkRequestDto } from './dto/create-request-work.dto';
 
 @Injectable()

@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
-import { EmployeeType } from 'src/employee-type/employee-type.model';
+import { EmployeeType } from 'src/employee-type/entities/employee-type.entity';
 import { EmployeeSlotSchedule } from 'src/employee-slot-schedule/employee-slot-schedule.model';
 
 @Entity({ name: 'employees', schema: 'employee' })

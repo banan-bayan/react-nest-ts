@@ -1,7 +1,7 @@
 import { Controller, Body, Get, Post } from '@nestjs/common';
 import { WorkRequestService } from './work-request.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { WorkRequest } from './work-request.model';
+import { WorkRequest } from './entities/work-request.entity';
 import { CreateWorkRequestDto } from './dto/create-request-work.dto';
 
 @ApiTags('Заявки на работу')
