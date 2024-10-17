@@ -21,7 +21,7 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Получение списка всех пользователей' })
   @ApiResponse({ status: 200, type: [User], description: 'Список пользователей успешно получен' })
-  @UseGuards(RolesGuard) // JwtAuthGuard
+  @UseGuards(RolesGuard)
   @Roles('Admin')
   @Get()
   getAll() {

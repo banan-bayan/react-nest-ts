@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { WorkRequestStatus } from '../entities/work-request.entity';
+import { WorkRequestStatus } from 'src/Types';
 
 export class CreateWorkRequestDto {
   @ApiProperty({ example: 1, description: 'ID заявки' })

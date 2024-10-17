@@ -2,13 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTabl
 import { User  } from 'src/users/entities/users.entity';
 import { EmployeeSlotSchedule  } from 'src/employee-slot-schedule/employee-slot-schedule.model';
 import { EmployeeWorkType   } from 'src/employee-work-type/employee-work-type.model';
-
-export enum WorkRequestStatus {
-  WAITING = 'WAITING',
-  DONE = 'DONE',
-  CANCELED = 'CANCELED',
-  DONE_NONPAID = 'DONE_NONPAID'
-}
+import { WorkRequestStatus } from 'src/Types';
 
 @Entity({ name: 'work_requests', schema: 'user' })
 export class WorkRequest {
