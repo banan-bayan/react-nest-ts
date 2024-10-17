@@ -9,7 +9,7 @@ export class WorkRequestService {
   constructor(@InjectRepository(WorkRequest) private workRequestRepository: Repository<WorkRequest>) {}
 
   async createWorkRequest(dto: CreateWorkRequestDto) {
-    const workRequest = await this.workRequestRepository.create(dto);
+    const workRequest = this.workRequestRepository.create(dto);
 
     return workRequest;
   }

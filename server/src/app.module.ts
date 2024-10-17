@@ -2,14 +2,6 @@ import { Module } from '@nestjs/common'; // декаратор - это обёр
 import { TypeOrmModule} from '@nestjs/typeorm'
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
-import { User } from './users/entities/users.entity';
-import { Role } from './roles/entities/roles.entity';
-import { EmployeeType } from './employee-type/entities/employee-type.entity';
-import { EmployeeWorkType } from './employee-work-type/employee-work-type.model';
-import { Employee } from './employee/entities/employee.entity';
-import { EmployeeBaseSchedule } from './employee-base-schedule/employee-base-schedule.model';
-import { EmployeeSlotSchedule } from './employee-slot-schedule/employee-slot-schedule.model';
-import { WorkRequest } from './work-request/entities/work-request.entity';
 import { RolesModule } from './roles/roles.module';
 import { EmployeeTypeModule } from './employee-type/employee-type.module';
 import { EmployeeWorkTypeModule } from './employee-work-type/employee-work-type.module';
@@ -35,9 +27,6 @@ import { SwaggerConfigService } from './swagger/swagger.service';
       password: process.env.POSTGRES_PASSWORD,
       database:  process.env.POSTGRES_DB,
       entities: [
-        User,
-        Role,
-        WorkRequest,
         __dirname + '../*.entity{.ts,.js}',
     ],
       synchronize: !!process.env.POSTGRES_SYNCHRONIZE,

@@ -9,7 +9,7 @@ export class EmployeeTypeService {
   constructor(@InjectRepository(EmployeeType) private EmployeeTypeRepository: Repository<EmployeeType>) {}
 
   async createEmployeeType(dto: CreateEmployeeTypeDto) {
-    const employeeType = await this.EmployeeTypeRepository.create(dto);
+    const employeeType = this.EmployeeTypeRepository.create(dto);
 
     return employeeType;
   }

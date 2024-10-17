@@ -11,7 +11,7 @@ export class RolesService {
   ) {}
 
   async createRole(dto: CreateRoleDto) {
-    const role = await this.roleRepository.create(dto);
+    const role = this.roleRepository.create(dto);
 
     return role;
   }
@@ -22,8 +22,8 @@ export class RolesService {
     return roles;
   }
 
-  async getRoleByName(value: string) {
-    const role = await this.roleRepository.findOne({ where: { value } });
+  async getRoleByName(description: string) {
+    const role = await this.roleRepository.findOne({ where: { description } });
 
     return role;
   }

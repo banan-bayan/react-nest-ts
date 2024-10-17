@@ -5,9 +5,6 @@ export class Role {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
-  @Column({ type: 'varchar', unique: true })
-  value: string;
-
   @Column({ type: 'varchar' })
   description: string;
 }

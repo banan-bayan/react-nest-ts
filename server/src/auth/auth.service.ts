@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
-import { CreateAutUserDto } from 'src/users/dto/auth-user.dto';
+import { CreateAuthUserDto  } from 'src/users/dto/auth-user.dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcryptjs';
 import { User } from 'src/users/entities/users.entity';
@@ -11,27 +11,30 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
   constructor(
-    private userServie: UsersService,
+    private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
 
-  async login(authUserDto: CreateAutUserDto) {
+  async login(authUserDto: CreateAuthUserDto ) {
     const user = await this.validateUser(authUserDto);
 
     return this.generateToken(user);
   }
 
   async registration(userDto: CreateUserDto) {
-    const condidate = await this.userServie.getUserByEmail(userDto.email);
+
+    const condidate = await this.usersService.getUserByEmail(userDto.email);
+
     if (condidate) {
       throw new HttpException(
         'Пользователь с таким  EMAIL уже зарегистрирован',
         HttpStatus.BAD_REQUEST,
       );
     }
-    const hashPassword = await bcrypt.hash(userDto.password, 5);
 
-    const user = await this.userServie.createUser({
+    const generateSalt = await bcrypt.genSalt();
+    const hashPassword = await bcrypt.hash(userDto.password, generateSalt);
+    const user = await this.usersService.createUser({
       ...userDto,
       password: hashPassword,
     });
@@ -47,8 +50,9 @@ export class AuthService {
     };
   }
 
-  private async validateUser(authUserDto: CreateAutUserDto) {
-    const user = await this.userServie.getUserByEmail(authUserDto.email);
+  private async validateUser(authUserDto: CreateAuthUserDto ) {
+    const user = await this.usersService.getUserByEmail(authUserDto.email);
+
     const isPasswordEquals = await bcrypt.compare(
       authUserDto.password,
       user.password,
