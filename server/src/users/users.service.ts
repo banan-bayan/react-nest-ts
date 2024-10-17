@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/users.entity';
 import { Repository } from 'typeorm';
@@ -20,8 +20,8 @@ export class UsersService {
       throw new BadRequestException();
     }
 
-    const user = this.usersRepository.create({...userDto, roles: [role]});
-  
+    const user = this.usersRepository.create({ ...userDto, roles: [role] });
+
     const newUser = await this.usersRepository.save(user);
 
     return newUser;
@@ -42,5 +42,21 @@ export class UsersService {
     });
 
     return user;
+  }
+
+  async findUser(id: number) {
+    const user = await this.usersRepository.findOneBy({ id });
+
+    if (!user) {
+      throw new Error(`Пользователь с ID ${id} не найден`);
+    }
+
+    return user;
+  }
+
+  async removeUser(id: number) {
+    const user = await this.findUser(id);
+
+    return await this.usersRepository.remove(user);
   }
 }

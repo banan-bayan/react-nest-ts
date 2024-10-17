@@ -64,7 +64,7 @@ export class WorkRequestController {
   @UseGuards(RolesGuard)
   @Roles('Admin', 'User')
   @ApiOperation({ summary: 'Отмена заявки пользователя' })
-  @ApiResponse({ status: 200, type: [WorkRequest], description: 'Отмена пользователя' })
+  @ApiResponse({ status: 200, type: WorkRequest, description: 'Отмена пользователя' })
   @Patch(':id')
   cancel(@Param('id') id: string) {
 
@@ -74,10 +74,11 @@ export class WorkRequestController {
   @UseGuards(RolesGuard)
   @Roles('Admin')
   @ApiOperation({ summary: 'Удаление заявки' })
-  @ApiResponse({ status: 200, type: [WorkRequest], description: 'Удаление заявки' })
+  @ApiResponse({ status: 200, type: WorkRequest, description: 'Удаление заявки' })
   @Delete(':id')
   remove(@Param('id') id: string) {
 
     return this.workRequestService.removeWorkRequest(+id);
   }
 }
+

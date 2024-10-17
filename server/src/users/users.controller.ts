@@ -1,10 +1,9 @@
-import { Controller, Body, Post, Get, UseGuards } from '@nestjs/common';
+import { Controller, Body, Post, Get, UseGuards, Delete, Param } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './entities/users.entity';
 import { Roles } from 'src/auth/roles-auth.decorator';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/roles.guard';
 
 @ApiTags('Пользователи')
@@ -26,5 +25,28 @@ export class UsersController {
   @Get()
   getAll() {
     return this.usersService.getAllUser();
+  }
+
+
+
+  @UseGuards(RolesGuard)
+  @Roles('Admin')
+  @ApiOperation({ summary: 'Получение пользователя' })
+  @ApiResponse({ status: 200, type: User, description: 'Пользователь' })
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+
+    return this.usersService.findUser(+id);
+  }
+
+
+  @UseGuards(RolesGuard)
+  @Roles('Admin')
+  @ApiOperation({ summary: 'Удаление пользователя' })
+  @ApiResponse({ status: 200, type: User, description: 'Удаление пользователя' })
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+
+    return this.usersService.removeUser(+id);
   }
 }
