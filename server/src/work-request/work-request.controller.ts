@@ -35,7 +35,7 @@ export class WorkRequestController {
   // @UseGuards(RolesGuard)
   @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получение всех заявок' })
-  @ApiResponse({ status: 200, type: [WorkRequest], description: 'Список всех заявок' })
+  @ApiResponse({ status: 200, type: [WorkRequest], description: 'Список всех заявок успешно получены' })
   @Get()
   getAll() {
 
@@ -45,7 +45,7 @@ export class WorkRequestController {
   // @UseGuards(RolesGuard)
   @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получение заявки' })
-  @ApiResponse({ status: 200, type: WorkRequest, description: 'Заявка' })
+  @ApiResponse({ status: 200, type: WorkRequest, description: 'Заявка успешно получена' })
   @Get(':id')
   getOne(@Param('id') id: number) {
 
@@ -55,7 +55,7 @@ export class WorkRequestController {
   // @UseGuards(RolesGuard)
   @Roles(ERoles.Admin, ERoles.User)
   @ApiOperation({ summary: 'Получение всех заявок пользователя' })
-  @ApiResponse({ status: 200, type: [WorkRequest], description: 'Заявки пользователя' })
+  @ApiResponse({ status: 200, type: [WorkRequest], description: 'Заявки пользователя успешно получены' })
   @Get('user/:id')
   getUserRequests(@Param('id') id: number) {
 
@@ -65,7 +65,7 @@ export class WorkRequestController {
   // @UseGuards(RolesGuard)
   @Roles(ERoles.Admin, ERoles.User)
   @ApiOperation({ summary: 'Отмена заявки пользователя' })
-  @ApiResponse({ status: 200, type: WorkRequest, description: 'Отмена пользователя' })
+  @ApiResponse({ status: 200, type: WorkRequest, description: 'Заявка успешно отмена' })
   @Patch(':id')
   cancel(@Param('id') id: number) {
 
@@ -75,7 +75,7 @@ export class WorkRequestController {
   // @UseGuards(RolesGuard)
   @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Удаление заявки' })
-  @ApiResponse({ status: 200, type: WorkRequest, description: 'Удаление заявки' })
+  @ApiResponse({ status: 200, type: WorkRequest, description: 'Заявка успешно удалена' })
   @Delete(':id')
   remove(@Param('id') id: number) {
 

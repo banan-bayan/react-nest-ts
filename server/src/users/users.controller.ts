@@ -32,7 +32,7 @@ export class UsersController {
   @UseGuards(RolesGuard)
   @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получение пользователя' })
-  @ApiResponse({ status: 200, type: User, description: 'Пользователь' })
+  @ApiResponse({ status: 200, type: User, description: 'Пользователь успешно получен' })
   @Get(':id')
   findOne(@Param('id') id: number) {
 
@@ -43,7 +43,7 @@ export class UsersController {
   @UseGuards(RolesGuard)
   @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Удаление пользователя' })
-  @ApiResponse({ status: 200, type: User, description: 'Удаление пользователя' })
+  @ApiResponse({ status: 200, type: User, description: 'Пользователь успешно удален' })
   @Delete(':id')
   remove(@Param('id') id: number) {
 

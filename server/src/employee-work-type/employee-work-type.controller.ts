@@ -12,6 +12,8 @@ import { ERoles } from 'src/Types';
 export class EmployeeWorkTypeController {
   constructor(private readonly employeeWorkTypeService: EmployeeWorkTypeService) {}
 
+  // @UseGuards(RolesGuard)
+  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Создать новый тип работ' })
   @ApiResponse({ status: 201, type: EmployeeWorkType, description: 'Тип работ успешно создан' })
   @Post()
@@ -19,6 +21,8 @@ export class EmployeeWorkTypeController {
     return this.employeeWorkTypeService.createEmployeeWorkType(employeeWorkTypeDto);
   }
 
+    // @UseGuards(RolesGuard)
+  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получить все типы работ' })
   @ApiResponse({ status: 200, type: [EmployeeWorkType], description: 'Список типов работ успешно получен' })
   @Get()
@@ -26,16 +30,20 @@ export class EmployeeWorkTypeController {
     return this.employeeWorkTypeService.getAllEmployeeWorkType();
   }
 
+    // @UseGuards(RolesGuard)
+  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получить тип работ' })
-  @ApiResponse({ status: 200, type: EmployeeWorkType, description: 'Получен тип работ' })
+  @ApiResponse({ status: 200, type: EmployeeWorkType, description: 'Тип работ успешно получен' })
   @Get('/:id')
   getOne(@Param('id') id: number) {
 
     return this.employeeWorkTypeService.getEmployeeWorkType(id);
   }
 
+    // @UseGuards(RolesGuard)
+  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Удалить тип работ' })
-  @ApiResponse({ status: 200, type: EmployeeWorkType, description: 'Удалён тип работ' })
+  @ApiResponse({ status: 200, type: EmployeeWorkType, description: 'Тип работ успешно удалён' })
   @Delete('/:id')
   delete(@Param('id') id: number) {
 

@@ -25,6 +25,11 @@ export class RolesService {
   async getRoleByName(description: string) {
     const role = await this.roleRepository.findOne({ where: { description } });
 
+    if (!role) {
+      throw new Error(`Роль ${description} не найдена`);
+    }
+
     return role;
   }
+
 }
