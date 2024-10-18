@@ -25,8 +25,9 @@ export class WorkRequestService {
     return await this.workRequestRepository.find();
   }
 
-  async findWorkRequest(id: number) {
+  async getWorkRequest(id: number) {
     const workRequest = await this.workRequestRepository.findOneBy({ id });
+    
     if (!workRequest) {
       throw new Error(`Заявка с ID ${id} не найдена`);
     }
@@ -34,26 +35,31 @@ export class WorkRequestService {
     return workRequest;
   }
 
-  async findUserWorkRequests(id: number) {
+  async getUserWorkRequests(id: number) {
+    const workRequest = await this.workRequestRepository.find({ where: { id } });
 
-    return await this.workRequestRepository.find({ where: { id } });
+    if (!workRequest) {
+      throw new Error(`Заявка с ID ${id} не найдена`);
+    }
+
+    return workRequest;
   }
 
   async updateWorkRequest(id: number, updateWorkRequestDto: UpdateWorkRequestDto) {
-    const workRequest = await this.findWorkRequest(id);
+    const workRequest = await this.getWorkRequest(id);
 
     return await this.workRequestRepository.save({ ...workRequest, ...updateWorkRequestDto });
   }
 
   async cancelWorkRequest(id: number) {
-    const workRequest = await this.findWorkRequest(id);
+    const workRequest = await this.getWorkRequest(id);
     workRequest.status = WorkRequestStatus.CANCELED;
 
     return await this.workRequestRepository.save(workRequest);
   }
 
   async removeWorkRequest(id: number) {
-    const workRequest = await this.findWorkRequest(id);
+    const workRequest = await this.getWorkRequest(id);
 
     return await this.workRequestRepository.remove(workRequest);
   }

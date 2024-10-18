@@ -1,8 +1,11 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Param, Delete } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { Employee } from './entities/employee.entity';
+import { Roles } from 'src/auth/roles-auth.decorator';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { ERoles } from 'src/Types';
 
 @ApiTags('Сотрудники')
 @Controller('api/employee')
@@ -19,10 +22,31 @@ export class EmployeeController {
 
   @ApiOperation({ summary: 'Получение списка сотрудников' }) 
   @ApiResponse({ status: 200, type: [Employee], description: 'Список всех сотрудников' })
+  // @UseGuards(RolesGuard)
+  @Roles('Admin')
   @Get()
   getAll() {
     
     return this.employeeService.getAllEmployees();
   }
   
+  @ApiOperation({ summary: 'Получение сотрудника' })
+  @ApiResponse({ status: 200, type: Employee, description: 'Сотрудник' })
+  // @Roles(ERoles.Admin)
+  // @UseGuards(RolesGuard)
+  @Get(':id')
+  getOne(@Param() id: number) {
+
+    return this.employeeService.getEmployee(id)
+  }
+
+  @ApiOperation({ summary: 'Удаление сотрудника' })
+  @ApiResponse({ status: 200, type: Employee, description: 'Удаленный сотрудник' })
+  // @UseGuards(RolesGuard)
+  // @Roles(ERoles.Admin)
+  @Delete(':id')
+  delete(@Param() id: number) {
+
+    return this.employeeService.deleteEmployee(id)
+  }
 }

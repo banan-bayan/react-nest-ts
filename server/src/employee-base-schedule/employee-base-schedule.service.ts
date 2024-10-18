@@ -24,4 +24,22 @@ export class EmployeeBaseScheduleService {
 
     return employeeBaseSchedules;
   }
+
+  async getEmployeeBaseSchedule(id: number) {
+    const employeeBaseSchedule = await this.employeeBaseScheduleRepository.findOneBy({ id });
+
+    if (!employeeBaseSchedule) {
+      throw new Error(`Распиание сотрудника с ID ${id} не найдено`);
+    }
+
+    return employeeBaseSchedule;
+  }
+
+
+
+  async removeEmployeeBaseSchedule(id: number) {
+    const employeeBaseSchedule = await this.getEmployeeBaseSchedule(id);
+
+    return await this.employeeBaseScheduleRepository.delete(employeeBaseSchedule);
+  }
 }

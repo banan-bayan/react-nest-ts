@@ -14,6 +14,7 @@ import { WorkRequestService } from './work-request.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { WorkRequest } from './entities/work-request.entity';
 import { CreateWorkRequestDto } from './dto/create-work-request.dto';
+import { ERoles } from 'src/Types';
 
 
 @ApiTags('Заявки на работу')
@@ -21,8 +22,8 @@ import { CreateWorkRequestDto } from './dto/create-work-request.dto';
 export class WorkRequestController {
   constructor(private readonly workRequestService: WorkRequestService) {}
 
-  @UseGuards(RolesGuard)
-  @Roles('Admin', 'User')
+  // @UseGuards(RolesGuard)
+  @Roles(ERoles.Admin, ERoles.User)
   @ApiOperation({ summary: 'Создание новой заявки' })
   @ApiResponse({ status: 201, type: WorkRequest, description: 'Заявка успешно создана' })
   @Post()
@@ -31,8 +32,8 @@ export class WorkRequestController {
     return this.workRequestService.createWorkRequest(workRequestDto);
   }
 
-  @UseGuards(RolesGuard)
-  @Roles('Admin')
+  // @UseGuards(RolesGuard)
+  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получение всех заявок' })
   @ApiResponse({ status: 200, type: [WorkRequest], description: 'Список всех заявок' })
   @Get()
@@ -41,44 +42,44 @@ export class WorkRequestController {
     return this.workRequestService.getAllWorkRequests();
   }
 
-  @UseGuards(RolesGuard)
-  @Roles('Admin')
+  // @UseGuards(RolesGuard)
+  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получение заявки' })
   @ApiResponse({ status: 200, type: WorkRequest, description: 'Заявка' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  getOne(@Param('id') id: number) {
 
-    return this.workRequestService.findWorkRequest(+id);
+    return this.workRequestService.getWorkRequest(id);
   }
 
-  @UseGuards(RolesGuard)
-  @Roles('Admin', 'User')
+  // @UseGuards(RolesGuard)
+  @Roles(ERoles.Admin, ERoles.User)
   @ApiOperation({ summary: 'Получение всех заявок пользователя' })
   @ApiResponse({ status: 200, type: [WorkRequest], description: 'Заявки пользователя' })
-  @Get('user/:userId')
-  findUserRequests(@Param('userId') userId: string) {
+  @Get('user/:id')
+  getUserRequests(@Param('id') id: number) {
 
-    return this.workRequestService.findUserWorkRequests(+userId);
+    return this.workRequestService.getUserWorkRequests(id);
   }
 
-  @UseGuards(RolesGuard)
-  @Roles('Admin', 'User')
+  // @UseGuards(RolesGuard)
+  @Roles(ERoles.Admin, ERoles.User)
   @ApiOperation({ summary: 'Отмена заявки пользователя' })
   @ApiResponse({ status: 200, type: WorkRequest, description: 'Отмена пользователя' })
   @Patch(':id')
-  cancel(@Param('id') id: string) {
+  cancel(@Param('id') id: number) {
 
-    return this.workRequestService.cancelWorkRequest(+id);
+    return this.workRequestService.cancelWorkRequest(id);
   }
 
-  @UseGuards(RolesGuard)
-  @Roles('Admin')
+  // @UseGuards(RolesGuard)
+  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Удаление заявки' })
   @ApiResponse({ status: 200, type: WorkRequest, description: 'Удаление заявки' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
 
-    return this.workRequestService.removeWorkRequest(+id);
+    return this.workRequestService.removeWorkRequest(id);
   }
 }
 

@@ -5,6 +5,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './entities/users.entity';
 import { Roles } from 'src/auth/roles-auth.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
+import { ERoles } from 'src/Types';
 
 @ApiTags('Пользователи')
 @Controller('api/users')
@@ -21,32 +22,31 @@ export class UsersController {
   @ApiOperation({ summary: 'Получение списка всех пользователей' })
   @ApiResponse({ status: 200, type: [User], description: 'Список пользователей успешно получен' })
   @UseGuards(RolesGuard)
-  @Roles('Admin')
+  @Roles(ERoles.Admin)
   @Get()
   getAll() {
     return this.usersService.getAllUser();
   }
 
 
-
   @UseGuards(RolesGuard)
-  @Roles('Admin')
+  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получение пользователя' })
   @ApiResponse({ status: 200, type: User, description: 'Пользователь' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
 
-    return this.usersService.findUser(+id);
+    return this.usersService.getUserById(id);
   }
 
 
   @UseGuards(RolesGuard)
-  @Roles('Admin')
+  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Удаление пользователя' })
   @ApiResponse({ status: 200, type: User, description: 'Удаление пользователя' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
 
-    return this.usersService.removeUser(+id);
+    return this.usersService.removeUser(id);
   }
 }

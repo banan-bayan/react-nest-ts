@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { EmployeeWorkType } from 'src/employee-work-type/employee-work-type.model';
+import { EmployeeWorkType } from 'src/employee-work-type/entities/employee-work-type.entity';
 
 @Entity({ name: 'employee_types', schema: 'employee' })
 export class EmployeeType {

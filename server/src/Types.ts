@@ -4,3 +4,10 @@ export enum WorkRequestStatus {
   CANCELED = 'CANCELED',
   DONE_NONPAID = 'DONE_NONPAID'
 }
+
+export enum ERoles {
+  Admin = 'Admin',
+  User = 'User',
+}
+
+console.log(ERoles.Admin)

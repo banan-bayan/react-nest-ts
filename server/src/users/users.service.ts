@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/users.entity';
 import { Repository } from 'typeorm';
@@ -44,7 +44,7 @@ export class UsersService {
     return user;
   }
 
-  async findUser(id: number) {
+  async getUserById(id: number) {
     const user = await this.usersRepository.findOneBy({ id });
 
     if (!user) {
@@ -55,7 +55,7 @@ export class UsersService {
   }
 
   async removeUser(id: number) {
-    const user = await this.findUser(id);
+    const user = await this.getUserById(id);
 
     return await this.usersRepository.remove(user);
   }

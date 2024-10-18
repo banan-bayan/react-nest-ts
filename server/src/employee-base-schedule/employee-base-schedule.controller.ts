@@ -1,4 +1,4 @@
-import { Controller, Body, Get, Post } from '@nestjs/common';
+import { Controller, Body, Get, Post, Param, Delete, UseGuards } from '@nestjs/common';
 import { EmployeeBaseScheduleService } from './employee-base-schedule.service';
 import { EmployeeBaseSchedule } from './employee-base-schedule.model';
 import { CreateEmployeeBaseScheduleDto } from './dto/create-employee-base-schedule.dto';
@@ -21,5 +21,20 @@ export class EmployeeBaseScheduleController {
   @Get()
   getAll() {
     return this.employeeBaseScheduleService.getAllEmployeeBaseSchedule();
+  }
+
+  @ApiOperation({ summary: 'Получить базовое расписание сотрудника' })
+  @ApiResponse({ status: 200, type: [EmployeeBaseSchedule], description: 'базовое расписание сотрудника успешно получено' })
+  @Get('/:id')
+  getAllEmployee(@Param('id') id: number) {
+    return this.employeeBaseScheduleService.getEmployeeBaseSchedule(id);
+  }
+
+
+  @ApiOperation({ summary: 'Удалить базовое расписание сотрудника' })
+  @ApiResponse({ status: 200, type: EmployeeBaseSchedule, description: 'базовое расписание сотрудника успешно удалено' })
+  @Delete('/:id')
+  delete(@Param('id') id: number) {
+    return this.employeeBaseScheduleService.removeEmployeeBaseSchedule(id);
   }
 }

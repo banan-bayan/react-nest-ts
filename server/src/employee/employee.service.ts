@@ -20,7 +20,19 @@ export class EmployeeService {
     return employees;
   }
 
-  // async deleteEmployee() {
+  async getEmployee(id: number) {
+    const employee = await this.employeeRepository.findOneBy({id});
 
-  // }
+    return employee;
+  }
+
+  async deleteEmployee(id: number) {
+     const employee = await this.getEmployee(id);
+
+     if (!employee) {
+      throw new Error(`Сотрудник с ID ${id} не найден`);
+    }
+    
+     return await this.employeeRepository.delete(employee)
+  }
 }
