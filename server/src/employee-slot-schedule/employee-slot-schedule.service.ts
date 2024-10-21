@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { EmployeeSlotSchedule } from './employee-slot-schedule.model';
+import { EmployeeSlotSchedule } from './entities/employee-slot-schedule.entity';
 import { CreateEmployeeSlotScheduleDto } from './dto/create-employee-slot-schedule.dto';
 @Injectable()
 export class EmployeeSlotScheduleService {

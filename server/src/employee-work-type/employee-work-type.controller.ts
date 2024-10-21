@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Delete, Param } from '@nestjs/common';
+import { Controller, Post, Get, Body, Delete, Param, UseGuards } from '@nestjs/common';
 import { EmployeeWorkTypeService } from './employee-work-type.service';
 import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CreateEmployeeWorkTypeDto } from './dto/create-employee-work-type.dto';
@@ -9,29 +9,27 @@ import { ERoles } from 'src/Types';
 
 @ApiTags('Типы работ сотрудников')
 @Controller('api/employee-work-type')
+@UseGuards(RolesGuard)
+@Roles(ERoles.Admin)
 export class EmployeeWorkTypeController {
   constructor(private readonly employeeWorkTypeService: EmployeeWorkTypeService) {}
 
-  // @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Создать новый тип работ' })
   @ApiResponse({ status: 201, type: EmployeeWorkType, description: 'Тип работ успешно создан' })
   @Post()
   create(@Body() employeeWorkTypeDto: CreateEmployeeWorkTypeDto) {
+
     return this.employeeWorkTypeService.createEmployeeWorkType(employeeWorkTypeDto);
   }
 
-    // @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получить все типы работ' })
   @ApiResponse({ status: 200, type: [EmployeeWorkType], description: 'Список типов работ успешно получен' })
   @Get()
   getAll() {
+    
     return this.employeeWorkTypeService.getAllEmployeeWorkType();
   }
 
-    // @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получить тип работ' })
   @ApiResponse({ status: 200, type: EmployeeWorkType, description: 'Тип работ успешно получен' })
   @Get('/:id')
@@ -40,8 +38,6 @@ export class EmployeeWorkTypeController {
     return this.employeeWorkTypeService.getEmployeeWorkType(id);
   }
 
-    // @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Удалить тип работ' })
   @ApiResponse({ status: 200, type: EmployeeWorkType, description: 'Тип работ успешно удалён' })
   @Delete('/:id')

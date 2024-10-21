@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
 import { User  } from 'src/users/entities/users.entity';
-import { EmployeeSlotSchedule  } from 'src/employee-slot-schedule/employee-slot-schedule.model';
+import { EmployeeSlotSchedule  } from 'src/employee-slot-schedule/entities/employee-slot-schedule.entity';
 import { EmployeeWorkType   } from 'src/employee-work-type/entities/employee-work-type.entity';
 import { WorkRequestStatus } from 'src/Types';
 

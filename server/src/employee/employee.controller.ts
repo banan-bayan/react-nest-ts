@@ -9,6 +9,8 @@ import { ERoles } from 'src/Types';
 
 @ApiTags('Сотрудники')
 @Controller('api/employee')
+@UseGuards(RolesGuard)
+@Roles(ERoles.Admin)
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
@@ -21,9 +23,7 @@ export class EmployeeController {
   }
 
   @ApiOperation({ summary: 'Получение списка сотрудников' }) 
-  @ApiResponse({ status: 200, type: [Employee], description: 'Список всех сотрудников' })
-  // @UseGuards(RolesGuard)
-  @Roles('Admin')
+  @ApiResponse({ status: 200, type: [Employee], description: 'Список всех сотрудников успешно получен' })
   @Get()
   getAll() {
     
@@ -31,9 +31,7 @@ export class EmployeeController {
   }
   
   @ApiOperation({ summary: 'Получение сотрудника' })
-  @ApiResponse({ status: 200, type: Employee, description: 'Сотрудник' })
-  // @Roles(ERoles.Admin)
-  // @UseGuards(RolesGuard)
+  @ApiResponse({ status: 200, type: Employee, description: 'Сотрудник успешно получен' })
   @Get(':id')
   getOne(@Param() id: number) {
 
@@ -41,9 +39,7 @@ export class EmployeeController {
   }
 
   @ApiOperation({ summary: 'Удаление сотрудника' })
-  @ApiResponse({ status: 200, type: Employee, description: 'Удаленный сотрудник' })
-  // @UseGuards(RolesGuard)
-  // @Roles(ERoles.Admin)
+  @ApiResponse({ status: 200, type: Employee, description: 'Сотрудник успешно удален' })
   @Delete(':id')
   delete(@Param() id: number) {
 

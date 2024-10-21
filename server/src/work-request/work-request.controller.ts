@@ -22,7 +22,7 @@ import { ERoles } from 'src/Types';
 export class WorkRequestController {
   constructor(private readonly workRequestService: WorkRequestService) {}
 
-  // @UseGuards(RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles(ERoles.Admin, ERoles.User)
   @ApiOperation({ summary: 'Создание новой заявки' })
   @ApiResponse({ status: 201, type: WorkRequest, description: 'Заявка успешно создана' })
@@ -32,7 +32,7 @@ export class WorkRequestController {
     return this.workRequestService.createWorkRequest(workRequestDto);
   }
 
-  // @UseGuards(RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получение всех заявок' })
   @ApiResponse({ status: 200, type: [WorkRequest], description: 'Список всех заявок успешно получены' })
@@ -42,7 +42,7 @@ export class WorkRequestController {
     return this.workRequestService.getAllWorkRequests();
   }
 
-  // @UseGuards(RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получение заявки' })
   @ApiResponse({ status: 200, type: WorkRequest, description: 'Заявка успешно получена' })
@@ -52,7 +52,7 @@ export class WorkRequestController {
     return this.workRequestService.getWorkRequest(id);
   }
 
-  // @UseGuards(RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles(ERoles.Admin, ERoles.User)
   @ApiOperation({ summary: 'Получение всех заявок пользователя' })
   @ApiResponse({ status: 200, type: [WorkRequest], description: 'Заявки пользователя успешно получены' })
@@ -62,7 +62,7 @@ export class WorkRequestController {
     return this.workRequestService.getUserWorkRequests(id);
   }
 
-  // @UseGuards(RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles(ERoles.Admin, ERoles.User)
   @ApiOperation({ summary: 'Отмена заявки пользователя' })
   @ApiResponse({ status: 200, type: WorkRequest, description: 'Заявка успешно отмена' })
@@ -72,7 +72,7 @@ export class WorkRequestController {
     return this.workRequestService.cancelWorkRequest(id);
   }
 
-  // @UseGuards(RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Удаление заявки' })
   @ApiResponse({ status: 200, type: WorkRequest, description: 'Заявка успешно удалена' })

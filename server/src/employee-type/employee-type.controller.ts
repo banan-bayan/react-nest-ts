@@ -9,11 +9,11 @@ import { ERoles } from 'src/Types';
 
 @ApiTags('Профессии')
 @Controller('api/employee-type')
+@UseGuards(RolesGuard)
+@Roles(ERoles.Admin)
 export class EmployeeTypeController {
   constructor(private readonly employeeTypeService: EmployeeTypeService) {}
 
-    // @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Создать профессию' })
   @ApiResponse({ status: 201, type: EmployeeType, description: 'Профессия успешно создана' })
   @Post()
@@ -22,8 +22,6 @@ export class EmployeeTypeController {
     return this.employeeTypeService.createEmployeeType(employeeTypeDto);
   }
 
-  // @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получить все профессии' })
   @ApiResponse({ status: 200, type: [EmployeeType], description: 'Список профессий успешно получен' })
   @Get()
@@ -32,8 +30,6 @@ export class EmployeeTypeController {
     return this.employeeTypeService.getAllEmployeeType();
   }
 
-    // @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получить профессию' })
   @ApiResponse({ status: 200, type: EmployeeType, description: 'Профессия успешно получена' })
   @Get('/:id')
@@ -42,8 +38,6 @@ export class EmployeeTypeController {
     return this.employeeTypeService.getEmployeeType(id);
   }
 
-      // @UseGuards(RolesGuard)
-    @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Удалить профессию' })
   @ApiResponse({ status: 200, type: EmployeeType, description: 'Профессия успешно удалена' })
   @Delete('/:id')

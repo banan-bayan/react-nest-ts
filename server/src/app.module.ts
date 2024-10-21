@@ -11,11 +11,13 @@ import { EmployeeSlotScheduleModule } from './employee-slot-schedule/employee-sl
 import { WorkRequestModule } from './work-request/work-request.module';
 import { AuthModule } from './auth/auth.module';
 import { SwaggerConfigService } from './swagger/swagger.service';
+// import { JwtService } from '@nestjs/jwt';
 
 @Module({
   controllers: [], // чтобы заработал контроллер его регаем в модуле
   providers: [SwaggerConfigService], // тут используется любой переиспользуемый компонент или сервисы с логикой (SERVICE)
   imports: [
+
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`
     }),

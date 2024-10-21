@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import { EmployeeType } from 'src/employee-type/entities/employee-type.entity';
-import { EmployeeSlotSchedule } from 'src/employee-slot-schedule/employee-slot-schedule.model';
+import { EmployeeSlotSchedule } from 'src/employee-slot-schedule/entities/employee-slot-schedule.entity';
 
 @Entity({ name: 'employees', schema: 'employee' })
 export class Employee {

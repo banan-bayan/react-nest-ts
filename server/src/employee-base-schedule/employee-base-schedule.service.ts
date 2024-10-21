@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EmployeeBaseSchedule } from './employee-base-schedule.model';
+import { EmployeeBaseSchedule } from './entities/employee-base-schedule.entity';
 import { Repository } from 'typeorm';
 import { CreateEmployeeBaseScheduleDto } from './dto/create-employee-base-schedule.dto';
 

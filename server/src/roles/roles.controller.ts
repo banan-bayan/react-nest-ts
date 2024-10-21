@@ -9,6 +9,8 @@ import { ERoles } from 'src/Types';
 
 @ApiTags('Роли')
 @Controller('api/roles')
+@UseGuards(RolesGuard)
+@Roles(ERoles.Admin)
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
@@ -21,8 +23,6 @@ export class RolesController {
 
   @ApiOperation({ summary: 'Получение всех ролей' })
   @ApiResponse({ status: 200, type: [Role], description: 'Список ролей успешно получен' })
-  // @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin)
   @Get()
   getAll() {
     
@@ -31,8 +31,6 @@ export class RolesController {
 
   @ApiOperation({ summary: 'Получение роли' })
   @ApiResponse({ status: 200, type: [Role], description: 'Роль успешно получена' })
-  // @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin)
   @Get('/:value')
   getByValue(@Param('value') value: string) {
 
