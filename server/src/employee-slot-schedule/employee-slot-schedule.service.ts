@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EmployeeSlotSchedule } from './entities/employee-slot-schedule.entity';
@@ -11,11 +11,12 @@ export class EmployeeSlotScheduleService {
   ) {}
 
   async createEmployeeSlotSchedule(dto: CreateEmployeeSlotScheduleDto) {
-    const employeeSlotSchedule =
-      this.employeeSlotScheduleRepository.create(dto);
+    const employeeSlotSchedule = this.employeeSlotScheduleRepository.create(dto);
+    await this.employeeSlotScheduleRepository.save(employeeSlotSchedule);
 
     return employeeSlotSchedule;
   }
+  
 
   async getAllEmployeeSlotSchedules() {
     const employeeSlotSchedules = this.employeeSlotScheduleRepository.find();
@@ -27,8 +28,8 @@ export class EmployeeSlotScheduleService {
     const employeeSlotsSchedules =
       await this.employeeSlotScheduleRepository.findBy({ id });
 
-    if (!employeeSlotsSchedules) {
-      throw new Error(`Слоты сотрудника с ID ${id} не найдены`);
+    if (!employeeSlotsSchedules.length) {
+      throw new NotFoundException(`Слоты сотрудника с ID ${id} не найдены`);
     }
 
     return employeeSlotsSchedules;
@@ -39,7 +40,7 @@ export class EmployeeSlotScheduleService {
       await this.employeeSlotScheduleRepository.findOneBy({ id });
 
     if (!employeeSlotSchedules) {
-      throw new Error(`Слот с ID ${id} не найден`);
+      throw new NotFoundException(`Слот с ID ${id} не найден`);
     }
 
     return employeeSlotSchedules;
@@ -47,9 +48,9 @@ export class EmployeeSlotScheduleService {
 
   async removeEmployeeSlotSchedules(id: number) {
     const employeeSlotSchedules = await this.getEmployeeSlotSchedules(id);
+    await this.employeeSlotScheduleRepository.remove(employeeSlotSchedules);
 
-    return await this.employeeSlotScheduleRepository.remove(
-      employeeSlotSchedules,
-    );
+    return { message: 'Временной слот сотрудника успешно удален' };
   }
+  
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EmployeeType } from './entities/employee-type.entity';
 import { Repository } from 'typeorm';
@@ -8,34 +8,33 @@ import { CreateEmployeeTypeDto } from './dto/create-employee-type.dto';
 export class EmployeeTypeService {
   constructor(
     @InjectRepository(EmployeeType)
-    private EmployeeTypeRepository: Repository<EmployeeType>,
+    private readonly employeeTypeRepository: Repository<EmployeeType>
   ) {}
 
-  async createEmployeeType(dto: CreateEmployeeTypeDto) {
-    const employeeType = this.EmployeeTypeRepository.create(dto);
+  async createEmployeeType(dto: CreateEmployeeTypeDto): Promise<EmployeeType> {
+    const employeeType = this.employeeTypeRepository.create(dto);
 
-    return employeeType;
+    return this.employeeTypeRepository.save(employeeType);
   }
 
-  async getAllEmployeeType() {
-    const employeeTypes = await this.EmployeeTypeRepository.find();
+  async getAllEmployeeType(): Promise<EmployeeType[]> {
 
-    return employeeTypes;
+    return this.employeeTypeRepository.find();
   }
 
-  async getEmployeeType(id: number) {
-    const employeeType = await this.EmployeeTypeRepository.findOneBy({ id });
+  async getEmployeeType(id: number): Promise<EmployeeType> {
+    const employeeType = await this.employeeTypeRepository.findOneBy({ id });
 
     if (!employeeType) {
-      throw new Error(`Профессия с ID ${id} не найдена`);
+      throw new NotFoundException(`Профессия с ID ${id} не найдена`);
     }
 
     return employeeType;
   }
 
-  async removeEmployeeType(id: number) {
+  async removeEmployeeType(id: number): Promise<EmployeeType> {
     const employeeType = await this.getEmployeeType(id);
 
-    return await this.EmployeeTypeRepository.remove(employeeType);
+    return this.employeeTypeRepository.remove(employeeType);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EmployeeBaseSchedule } from './entities/employee-base-schedule.entity';
 import { Repository } from 'typeorm';
@@ -12,12 +12,12 @@ export class EmployeeBaseScheduleService {
   ) {}
 
   async createEmployeeBaseSchedule(dto: CreateEmployeeBaseScheduleDto) {
-    const employeeBaseSchedule =
-      await this.employeeBaseScheduleRepository.create(dto);
+    const employeeBaseSchedule = this.employeeBaseScheduleRepository.create(dto);
+    await this.employeeBaseScheduleRepository.save(employeeBaseSchedule);
 
     return employeeBaseSchedule;
   }
-
+  
   async getAllEmployeeBaseSchedule() {
     const employeeBaseSchedules =
       await this.employeeBaseScheduleRepository.find();
@@ -29,7 +29,7 @@ export class EmployeeBaseScheduleService {
     const employeeBaseSchedule = await this.employeeBaseScheduleRepository.findOneBy({ id });
 
     if (!employeeBaseSchedule) {
-      throw new Error(`Распиание сотрудника с ID ${id} не найдено`);
+      throw new NotFoundException(`Расписание сотрудника с ID ${id} не найдено`);
     }
 
     return employeeBaseSchedule;
@@ -39,7 +39,9 @@ export class EmployeeBaseScheduleService {
 
   async removeEmployeeBaseSchedule(id: number) {
     const employeeBaseSchedule = await this.getEmployeeBaseSchedule(id);
+    await this.employeeBaseScheduleRepository.remove(employeeBaseSchedule);
 
-    return await this.employeeBaseScheduleRepository.remove(employeeBaseSchedule);
+    return { message: 'Базовое расписание сотрудника успешно удалено' };
   }
+  
 }

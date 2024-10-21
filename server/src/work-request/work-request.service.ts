@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { WorkRequest } from './entities/work-request.entity';
@@ -15,52 +15,51 @@ export class WorkRequestService {
 
   async createWorkRequest(dto: CreateWorkRequestDto) {
     const workRequest = this.workRequestRepository.create(dto);
-    await this.workRequestRepository.save(workRequest);
     
-    return workRequest;
+    return  this.workRequestRepository.save(workRequest);
   }
 
   async getAllWorkRequests() {
 
-    return await this.workRequestRepository.find();
+    return this.workRequestRepository.find();
   }
 
   async getWorkRequest(id: number) {
     const workRequest = await this.workRequestRepository.findOneBy({ id });
     
     if (!workRequest) {
-      throw new Error(`Заявка с ID ${id} не найдена`);
+      throw new NotFoundException(`Заявка с ID ${id} не найдена`);
     }
 
     return workRequest;
   }
 
   async getUserWorkRequests(id: number) {
-    const workRequest = await this.workRequestRepository.find({ where: { id } });
+    const workRequests = await this.workRequestRepository.find({ where: { id } });
 
-    if (!workRequest) {
-      throw new Error(`Заявка с ID ${id} не найдена`);
+    if (!workRequests.length) {
+      throw new NotFoundException(`Заявки пользователя с ID ${id} не найдены`);
     }
 
-    return workRequest;
+    return workRequests;
   }
 
   async updateWorkRequest(id: number, updateWorkRequestDto: UpdateWorkRequestDto) {
     const workRequest = await this.getWorkRequest(id);
 
-    return await this.workRequestRepository.save({ ...workRequest, ...updateWorkRequestDto });
+    return this.workRequestRepository.save({ ...workRequest, ...updateWorkRequestDto });
   }
 
   async cancelWorkRequest(id: number) {
     const workRequest = await this.getWorkRequest(id);
     workRequest.status = WorkRequestStatus.CANCELED;
 
-    return await this.workRequestRepository.save(workRequest);
+    return this.workRequestRepository.save(workRequest);
   }
 
   async removeWorkRequest(id: number) {
     const workRequest = await this.getWorkRequest(id);
 
-    return await this.workRequestRepository.remove(workRequest);
+    return this.workRequestRepository.remove(workRequest);
   }
 }

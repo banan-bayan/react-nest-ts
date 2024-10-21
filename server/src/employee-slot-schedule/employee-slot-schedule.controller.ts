@@ -47,7 +47,7 @@ export class EmployeeSlotScheduleController {
   }
 
   @ApiOperation({ summary: 'Удалить временной слот сотрудника' })
-  @ApiResponse({ status: 200, type: EmployeeSlotSchedule, description: 'Временныой слоты сотрудника успешно удален' })
+  @ApiResponse({ status: 200, type: EmployeeSlotSchedule, description: 'Временной слот сотрудника успешно удален' })
   @Delete('/:id')
   delete(@Param('id') id: number) {
 

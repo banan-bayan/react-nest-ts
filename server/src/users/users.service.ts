@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/users.entity';
 import { Repository } from 'typeorm';
@@ -17,7 +17,7 @@ export class UsersService {
     const role = await this.roleService.getRoleByName('User');
 
     if (!role) {
-      throw new BadRequestException();
+      throw new NotFoundException('Роль "User" не найдена');
     }
 
     const user = this.usersRepository.create({ ...userDto, roles: [role] });
@@ -57,6 +57,6 @@ export class UsersService {
   async removeUser(id: number) {
     const user = await this.getUserById(id);
 
-    return await this.usersRepository.remove(user);
+    return this.usersRepository.remove(user);
   }
 }
