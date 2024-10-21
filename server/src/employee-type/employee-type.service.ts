@@ -36,6 +36,6 @@ export class EmployeeTypeService {
   async removeEmployeeType(id: number) {
     const employeeType = await this.getEmployeeType(id);
 
-    return await this.EmployeeTypeRepository.delete(employeeType);
+    return await this.EmployeeTypeRepository.remove(employeeType);
   }
 }

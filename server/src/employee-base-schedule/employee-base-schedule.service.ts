@@ -40,6 +40,6 @@ export class EmployeeBaseScheduleService {
   async removeEmployeeBaseSchedule(id: number) {
     const employeeBaseSchedule = await this.getEmployeeBaseSchedule(id);
 
-    return await this.employeeBaseScheduleRepository.delete(employeeBaseSchedule);
+    return await this.employeeBaseScheduleRepository.remove(employeeBaseSchedule);
   }
 }

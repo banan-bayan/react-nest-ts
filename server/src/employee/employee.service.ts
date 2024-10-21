@@ -33,6 +33,6 @@ export class EmployeeService {
       throw new Error(`Сотрудник с ID ${id} не найден`);
     }
     
-     return await this.employeeRepository.delete(employee)
+     return await this.employeeRepository.remove(employee)
   }
 }

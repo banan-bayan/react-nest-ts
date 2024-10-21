@@ -48,7 +48,7 @@ export class EmployeeSlotScheduleService {
   async removeEmployeeSlotSchedules(id: number) {
     const employeeSlotSchedules = await this.getEmployeeSlotSchedules(id);
 
-    return await this.employeeSlotScheduleRepository.delete(
+    return await this.employeeSlotScheduleRepository.remove(
       employeeSlotSchedules,
     );
   }
