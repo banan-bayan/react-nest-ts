@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
@@ -33,15 +33,15 @@ export class EmployeeController {
   @ApiOperation({ summary: 'Получение сотрудника' })
   @ApiResponse({ status: 200, type: Employee, description: 'Сотрудник успешно получен' })
   @Get(':id')
-  getOne(@Param() id: number) {
+  getOne(@Param('id', ParseIntPipe) id: number) {
 
     return this.employeeService.getEmployee(id)
   }
 
   @ApiOperation({ summary: 'Удаление сотрудника' })
-  @ApiResponse({ status: 200, type: Employee, description: 'Сотрудник успешно удален' })
+  @ApiResponse({ status: 204, description: 'Сотрудник успешно удален' })
   @Delete(':id')
-  delete(@Param() id: number) {
+  delete(@Param('id', ParseIntPipe) id: number) {
 
     return this.employeeService.deleteEmployee(id)
   }

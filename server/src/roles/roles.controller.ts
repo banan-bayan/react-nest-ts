@@ -1,4 +1,4 @@
-import { Controller, Body, Get, Post, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Body, Get, Post, Param, UseGuards } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { Role } from './entities/roles.entity';
 import { ApiResponse, ApiOperation, ApiTags } from '@nestjs/swagger';

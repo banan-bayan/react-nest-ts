@@ -1,4 +1,4 @@
-import { Controller, Body, Get, Post, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Body, Get, Post, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { EmployeeBaseScheduleService } from './employee-base-schedule.service';
 import { EmployeeBaseSchedule } from './entities/employee-base-schedule.entity';
 import { CreateEmployeeBaseScheduleDto } from './dto/create-employee-base-schedule.dto';
@@ -34,15 +34,15 @@ export class EmployeeBaseScheduleController {
   @ApiOperation({ summary: 'Получить базовое расписание сотрудника' })
   @ApiResponse({ status: 200, type: [EmployeeBaseSchedule], description: 'Базовое расписание сотрудника успешно получено' })
   @Get('/:id')
-  getAllEmployee(@Param('id') id: number) {
+  getAllEmployee(@Param('id', ParseIntPipe) id: number) {
 
     return this.employeeBaseScheduleService.getEmployeeBaseSchedule(id);
   }
 
   @ApiOperation({ summary: 'Удалить базовое расписание сотрудника' })
-  @ApiResponse({ status: 200, type: EmployeeBaseSchedule, description: 'Базовое расписание сотрудника успешно удалено' })
+  @ApiResponse({ status: 204, description: 'Базовое расписание сотрудника успешно удалено' })
   @Delete('/:id')
-  delete(@Param('id') id: number) {
+  delete(@Param('id', ParseIntPipe) id: number) {
 
     return this.employeeBaseScheduleService.removeEmployeeBaseSchedule(id);
   }

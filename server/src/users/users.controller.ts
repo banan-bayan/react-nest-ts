@@ -1,4 +1,4 @@
-import { Controller, Body, Post, Get, UseGuards, Delete, Param } from '@nestjs/common';
+import { Controller, Body, Post, Get, UseGuards, Delete, Param, ParseIntPipe } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -9,43 +9,39 @@ import { ERoles } from 'src/Types';
 
 @ApiTags('Пользователи')
 @Controller('api/users')
+@UseGuards(RolesGuard)
+@Roles(ERoles.Admin)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {};
+  constructor(private readonly usersService: UsersService) {}
 
-  @ApiOperation({ summary: 'Создание нового пользователя' })
-  @ApiResponse({ status: 201, type: User, description: 'Пользователь успешно создан' })
+  @ApiOperation({ summary: 'Регистрация нового пользователя' })
+  @ApiResponse({ status: 201, type: User, description: 'Пользователь успешно зареган' })
   @Post()
   create(@Body() userDto: CreateUserDto) {
+
     return this.usersService.createUser(userDto);
   }
 
   @ApiOperation({ summary: 'Получение списка всех пользователей' })
   @ApiResponse({ status: 200, type: [User], description: 'Список пользователей успешно получен' })
-  @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin)
   @Get()
   getAll() {
-    return this.usersService.getAllUser();
+
+    return this.usersService.getAllUsers();
   }
 
-
-  @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получение пользователя' })
   @ApiResponse({ status: 200, type: User, description: 'Пользователь успешно получен' })
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
 
     return this.usersService.getUserById(id);
   }
 
-
-  @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Удаление пользователя' })
-  @ApiResponse({ status: 200, type: User, description: 'Пользователь успешно удален' })
+  @ApiResponse({ status: 204, description: 'Пользователь успешно удален' })
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  remove(@Param('id', ParseIntPipe) id: number) {
 
     return this.usersService.removeUser(id);
   }

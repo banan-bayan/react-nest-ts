@@ -27,7 +27,7 @@ export class UsersService {
     return newUser;
   }
 
-  async getAllUser() {
+  async getAllUsers() {
     const users = await this.usersRepository.find({
       relations: { roles: true },
     });

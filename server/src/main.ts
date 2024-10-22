@@ -9,8 +9,8 @@ async function start() {
   
   SwaggerConfigService.setupSwagger(app);
 
-  const jwtAuthGuard = app.get(JwtAuthGuard); // ограничение на уровне приложения
-  app.useGlobalGuards(jwtAuthGuard);
+  // const jwtAuthGuard = app.get(JwtAuthGuard); // ограничение на уровне приложения
+  // app.useGlobalGuards(jwtAuthGuard);
 
   await app.listen(PORT, () => console.log(`запустил порт PORT:${PORT}`))
 }

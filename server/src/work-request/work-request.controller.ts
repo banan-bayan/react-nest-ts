@@ -6,7 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards
+  UseGuards, ParseIntPipe
 } from '@nestjs/common';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles-auth.decorator';
@@ -32,8 +32,7 @@ export class WorkRequestController {
     return this.workRequestService.createWorkRequest(workRequestDto);
   }
 
-  @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin)
+
   @ApiOperation({ summary: 'Получение всех заявок' })
   @ApiResponse({ status: 200, type: [WorkRequest], description: 'Список всех заявок успешно получены' })
   @Get()
@@ -47,7 +46,7 @@ export class WorkRequestController {
   @ApiOperation({ summary: 'Получение заявки' })
   @ApiResponse({ status: 200, type: WorkRequest, description: 'Заявка успешно получена' })
   @Get(':id')
-  getOne(@Param('id') id: number) {
+  getOne(@Param('id', ParseIntPipe) id: number) {
 
     return this.workRequestService.getWorkRequest(id);
   }
@@ -57,7 +56,7 @@ export class WorkRequestController {
   @ApiOperation({ summary: 'Получение всех заявок пользователя' })
   @ApiResponse({ status: 200, type: [WorkRequest], description: 'Заявки пользователя успешно получены' })
   @Get('user/:id')
-  getUserRequests(@Param('id') id: number) {
+  getUserRequests(@Param('id', ParseIntPipe) id: number) {
 
     return this.workRequestService.getUserWorkRequests(id);
   }
@@ -67,7 +66,7 @@ export class WorkRequestController {
   @ApiOperation({ summary: 'Отмена заявки пользователя' })
   @ApiResponse({ status: 200, type: WorkRequest, description: 'Заявка успешно отмена' })
   @Patch(':id')
-  cancel(@Param('id') id: number) {
+  cancel(@Param('id', ParseIntPipe) id: number) {
 
     return this.workRequestService.cancelWorkRequest(id);
   }
@@ -75,9 +74,9 @@ export class WorkRequestController {
   @UseGuards(RolesGuard)
   @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Удаление заявки' })
-  @ApiResponse({ status: 200, type: WorkRequest, description: 'Заявка успешно удалена' })
+  @ApiResponse({ status: 204, description: 'Заявка успешно удалена' })
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  remove(@Param('id', ParseIntPipe) id: number) {
 
     return this.workRequestService.removeWorkRequest(id);
   }

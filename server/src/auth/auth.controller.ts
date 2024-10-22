@@ -1,30 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { CreateAuthUserDto } from 'src/auth/dto/auth-user.dto';
 
-  @ApiTags('Авторизация')
-  @Controller('api/auth')
-  export class AuthController {
-    constructor(private readonly authService: AuthService) {}
-    
-    @ApiOperation({})
-    @ApiResponse({})
-    @Post('/login')
-    login(@Body() userDto: CreateUserDto) {
+@ApiTags('Авторизация')
+@Controller('api/auth')
+export class AuthController {
+  constructor(private readonly authService: AuthService) {}
 
-      return this.authService.login(userDto);
-    }
-  
-    @ApiOperation({})
-    @ApiResponse({})
-    @Post('registration')
-    registration(@Body() userDto: CreateUserDto) {
+  @ApiOperation({ summary: 'Вход пользователя' })
+  @ApiResponse({ status: 200, description: 'Пользователь успешно авторизован' })
+  @ApiResponse({ status: 401, description: 'Неверные учетные данные' })
+  @Post('/login')
+  login(@Body() userDto: CreateAuthUserDto) {
+    return this.authService.login(userDto);
+  }
 
-      return this.authService.registration(userDto);
-    }
+  @ApiOperation({ summary: 'Регистрация нового пользователя' })
+  @ApiResponse({ status: 201, description: 'Пользователь успешно зарегистрирован' })
+  @ApiResponse({ status: 400, description: 'Ошибка при регистрации' })
+  @Post('/registration')
+  registration(@Body() userDto: CreateUserDto) {
+    return this.authService.registration(userDto);
+  }
 
 
 

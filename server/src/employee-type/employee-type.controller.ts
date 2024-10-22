@@ -1,4 +1,4 @@
-import { Controller, Body, Get, Post, Delete, Param, UseGuards } from '@nestjs/common';
+import { Controller, Body, Get, Post, Delete, Param, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { EmployeeTypeService } from './employee-type.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateEmployeeTypeDto } from './dto/create-employee-type.dto';
@@ -33,15 +33,15 @@ export class EmployeeTypeController {
   @ApiOperation({ summary: 'Получить профессию' })
   @ApiResponse({ status: 200, type: EmployeeType, description: 'Профессия успешно получена' })
   @Get('/:id')
-  getOne(@Param('id') id: number) {
+  getOne(@Param('id', ParseIntPipe) id: number) {
 
     return this.employeeTypeService.getEmployeeType(id);
   }
 
   @ApiOperation({ summary: 'Удалить профессию' })
-  @ApiResponse({ status: 200, type: EmployeeType, description: 'Профессия успешно удалена' })
+  @ApiResponse({ status: 204, description: 'Профессия успешно удалена' })
   @Delete('/:id')
-  delete(@Param('id') id: number) {
+  delete(@Param('id', ParseIntPipe) id: number) {
 
     return this.employeeTypeService.removeEmployeeType(id);
   }
