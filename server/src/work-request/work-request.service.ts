@@ -50,15 +50,15 @@ export class WorkRequestService {
     return workRequest;
   }
 
-  async getUserWorkRequests(userId: number) {
-    const workRequests = await this.workRequestRepository.find({ where: { userId } });
+  // async getUserWorkRequests(userId: number) {
+  //   const workRequests = await this.workRequestRepository.find({ where: { userId } });
 
-    if (!workRequests.length) {
-      throw new NotFoundException(`Заявки пользователя с ID ${userId} не найдены`);
-    }
+  //   if (!workRequests.length) {
+  //     throw new NotFoundException(`Заявки пользователя с ID ${userId} не найдены`);
+  //   }
 
-    return workRequests;
-  }
+  //   return workRequests;
+  // }
 
   async updateWorkRequest(id: number, updateWorkRequestDto: UpdateWorkRequestDto) {
     const workRequest = await this.getWorkRequest(id);

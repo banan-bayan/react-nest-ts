@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { EmployeeType } from 'src/employee-type/entities/employee-type.entity';
+import { WorkRequest } from 'src/work-request/entities/work-request.entity';
 
 @Entity({ name: 'employee_work_types', schema: 'employee' })
 export class EmployeeWorkType {
@@ -12,6 +13,9 @@ export class EmployeeWorkType {
   @Column({ type: 'float' })
   price: number;
 
-  @ManyToOne(() => EmployeeType, (employeeType) => employeeType.works)
-  employeeType: EmployeeType;
+  @OneToMany(() => EmployeeType, (employeeType) => employeeType.employeeWorkType)
+  employeeType: EmployeeType[];
+
+  @OneToMany(() => WorkRequest, (workRequest) => workRequest.employeeWorkType)
+  workRequest: WorkRequest[];
 }

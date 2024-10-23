@@ -10,9 +10,6 @@ export class WorkRequest {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
-  @Column({type: 'int'})
-  userId: number
-
   @ManyToOne(() => User)
   user: User;
 

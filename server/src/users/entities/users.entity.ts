@@ -1,5 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { Role } from 'src/roles/entities/roles.entity';
+import { WorkRequest } from 'src/work-request/entities/work-request.entity';
+
 
 @Entity({ name: 'users', schema: 'user' })
 export class User {
@@ -18,4 +20,7 @@ export class User {
   @ManyToMany(() => Role, { eager: true })
   @JoinTable({ name: 'user_roles' })
   roles: Role[];
+
+  @OneToMany(() => WorkRequest, workRequest => workRequest.user)
+    workRequest: WorkRequest[];
 }

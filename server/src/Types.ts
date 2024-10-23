@@ -9,5 +9,3 @@ export enum ERoles {
   Admin = 'Admin',
   User = 'User',
 }
-
-console.log(ERoles.Admin)
