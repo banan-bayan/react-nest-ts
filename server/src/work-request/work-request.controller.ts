@@ -22,8 +22,8 @@ import { ERoles } from 'src/Types';
 export class WorkRequestController {
   constructor(private readonly workRequestService: WorkRequestService) {}
 
-  @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin, ERoles.User)
+  // @UseGuards(RolesGuard)
+  // @Roles(ERoles.Admin, ERoles.User)
   @ApiOperation({ summary: 'Создание новой заявки' })
   @ApiResponse({ status: 201, type: WorkRequest, description: 'Заявка успешно создана' })
   @Post()
@@ -55,10 +55,10 @@ export class WorkRequestController {
   @Roles(ERoles.Admin, ERoles.User)
   @ApiOperation({ summary: 'Получение всех заявок пользователя' })
   @ApiResponse({ status: 200, type: [WorkRequest], description: 'Заявки пользователя успешно получены' })
-  @Get('user/:id')
-  getUserRequests(@Param('id', ParseIntPipe) id: number) {
+  @Get('user/:userId')
+  getUserRequests(@Param('userId', ParseIntPipe) userId: number) {
 
-    return this.workRequestService.getUserWorkRequests(id);
+    return this.workRequestService.getUserWorkRequests(userId);
   }
 
   @UseGuards(RolesGuard)

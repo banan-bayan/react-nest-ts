@@ -1,22 +1,38 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { WorkRequest } from './entities/work-request.entity';
 import { CreateWorkRequestDto } from './dto/create-work-request.dto';
 import { UpdateWorkRequestDto } from './dto/update-work-request.dto';
 import { WorkRequestStatus } from 'src/Types';
+import { EmployeeType } from 'src/employee-type/entities/employee-type.entity';
 
 @Injectable()
 export class WorkRequestService {
   constructor(
     @InjectRepository(WorkRequest)
     private workRequestRepository: Repository<WorkRequest>,
+    @InjectRepository(EmployeeType)
+    private employeeTypeRepository: Repository<EmployeeType>
   ) {}
 
   async createWorkRequest(dto: CreateWorkRequestDto) {
-    const workRequest = this.workRequestRepository.create(dto);
+    const employees = await this.employeeTypeRepository.find({
+      where: { id: In(dto.employeeWorkTypeIds) },
+      relations: ['works'], // 'slot', 'user', 'employeeWorkType', 'userId' 'employeeType'  'works', 
+    });
     
-    return  this.workRequestRepository.save(workRequest);
+    console.log(employees, 'EMPLOOOOOOOYES')
+    if (!employees.length) {
+      throw new NotFoundException('Сотрудники с указанными типами работы не найдены');
+    }
+
+    const workRequest = this.workRequestRepository.create({
+      ...dto,
+      status: WorkRequestStatus.WAITING,
+    });
+    
+    // return this.workRequestRepository.save(workRequest);
   }
 
   async getAllWorkRequests() {
@@ -34,11 +50,11 @@ export class WorkRequestService {
     return workRequest;
   }
 
-  async getUserWorkRequests(id: number) {
-    const workRequests = await this.workRequestRepository.find({ where: { id } });
+  async getUserWorkRequests(userId: number) {
+    const workRequests = await this.workRequestRepository.find({ where: { userId } });
 
     if (!workRequests.length) {
-      throw new NotFoundException(`Заявки пользователя с ID ${id} не найдены`);
+      throw new NotFoundException(`Заявки пользователя с ID ${userId} не найдены`);
     }
 
     return workRequests;
