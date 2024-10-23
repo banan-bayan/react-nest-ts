@@ -3,7 +3,6 @@ import { Employee } from 'src/employee/entities/employee.entity';
 
 @Entity({ name: 'employee_base_schedules', schema: 'employee' })
 export class EmployeeBaseSchedule {
-
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 

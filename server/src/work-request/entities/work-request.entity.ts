@@ -20,10 +20,6 @@ export class WorkRequest {
   @JoinTable()
   employeeWorkType: EmployeeWorkType[];
 
-  @Column({
-    type: 'enum',
-    enum: WorkRequestStatus,
-    default: WorkRequestStatus.WAITING
-  })
+  @Column({ type: 'enum', enum: WorkRequestStatus, default: WorkRequestStatus.WAITING })
   status: WorkRequestStatus;
 }

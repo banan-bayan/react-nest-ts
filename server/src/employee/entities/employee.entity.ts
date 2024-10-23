@@ -19,5 +19,5 @@ export class Employee {
   slotSchedules: EmployeeSlotSchedule[];
 
   @OneToMany(() => EmployeeBaseSchedule, baseSchedule => baseSchedule.employee)
-    employeeBaseSchedule: EmployeeBaseSchedule[];
+  employeeBaseSchedule: EmployeeBaseSchedule[];
 }

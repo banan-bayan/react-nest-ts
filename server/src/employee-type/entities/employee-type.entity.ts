@@ -15,5 +15,5 @@ export class EmployeeType {
   employeeWorkType: EmployeeWorkType;
 
   @OneToMany(() => Employee, employee => employee.type, { onDelete: 'CASCADE' })
-    employee: Employee[];
+  employee: Employee[];
 }
