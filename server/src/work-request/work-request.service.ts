@@ -5,24 +5,45 @@ import { WorkRequest } from './entities/work-request.entity';
 import { CreateWorkRequestDto } from './dto/create-work-request.dto';
 import { UpdateWorkRequestDto } from './dto/update-work-request.dto';
 import { WorkRequestStatus } from 'src/Types';
-import { EmployeeType } from 'src/employee-type/entities/employee-type.entity';
+import { EmployeeTypeService } from 'src/employee-type/employee-type.service';
+import { UsersService } from 'src/users/users.service';
+import { EmployeeSlotSchedule } from 'src/employee-slot-schedule/entities/employee-slot-schedule.entity';
+import { EmployeeSlotScheduleService } from 'src/employee-slot-schedule/employee-slot-schedule.service';
 
 @Injectable()
 export class WorkRequestService {
   constructor(
     @InjectRepository(WorkRequest)
     private workRequestRepository: Repository<WorkRequest>,
-    @InjectRepository(EmployeeType)
-    private employeeTypeRepository: Repository<EmployeeType>
+    private employeeTypeService: EmployeeTypeService,
+    private userService: UsersService,
+    private slotService: EmployeeSlotScheduleService,
   ) {}
 
   async createWorkRequest(dto: CreateWorkRequestDto) {
-    const employees = await this.employeeTypeRepository.find({
-      where: { id: In(dto.employeeWorkTypeIds) },
-      relations: ['works'], // 'slot', 'user', 'employeeWorkType', 'userId' 'employeeType'  'works', 
+    const { startDate: startDateWorkRequest, employeeWorkTypeIds } = dto;
+
+    const employees = await this.employeeTypeService.find({
+      where: { id: In(employeeWorkTypeIds) },
+      relations: { employee: true },
     });
     
-    console.log(employees, 'EMPLOOOOOOOYES')
+    console.log(employees)
+
+    const employee = employees[0];
+    console.log(employee)
+
+    const employeeSlots = await this.slotService.find({
+      where: { id: employee.id },
+    });
+
+    const existSlot = employeeSlots.find(
+      ({ startDate }) => new Date(startDate).getTime() === new Date(startDateWorkRequest).getTime());
+
+    if (existSlot) {
+      throw new NotFoundException('Слот уже занят');
+    }
+
     if (!employees.length) {
       throw new NotFoundException('Сотрудники с указанными типами работы не найдены');
     }
@@ -31,18 +52,17 @@ export class WorkRequestService {
       ...dto,
       status: WorkRequestStatus.WAITING,
     });
-    
-    // return this.workRequestRepository.save(workRequest);
+
+    return this.workRequestRepository.save(workRequest);
   }
 
   async getAllWorkRequests() {
-
     return this.workRequestRepository.find();
   }
 
   async getWorkRequest(id: number) {
     const workRequest = await this.workRequestRepository.findOneBy({ id });
-    
+
     if (!workRequest) {
       throw new NotFoundException(`Заявка с ID ${id} не найдена`);
     }
@@ -50,20 +70,30 @@ export class WorkRequestService {
     return workRequest;
   }
 
-  // async getUserWorkRequests(userId: number) {
-  //   const workRequests = await this.workRequestRepository.find({ where: { userId } });
+  async getUserWorkRequests(id: number) {
+    // const workRequests = await this.userService.find({
+    //   where: { id },
+    //   relations: ['workRequest'],
+    // });
 
-  //   if (!workRequests.length) {
-  //     throw new NotFoundException(`Заявки пользователя с ID ${userId} не найдены`);
-  //   }
+    // console.log(workRequests, 'USER WORK REQUEST');
+    // if (!workRequests.length) {
+    //   throw new NotFoundException(`Заявки пользователя с ID ${id} не найдены`);
+    // }
 
-  //   return workRequests;
-  // }
+    // return workRequests;
+  }
 
-  async updateWorkRequest(id: number, updateWorkRequestDto: UpdateWorkRequestDto) {
+  async updateWorkRequest(
+    id: number,
+    updateWorkRequestDto: UpdateWorkRequestDto,
+  ) {
     const workRequest = await this.getWorkRequest(id);
 
-    return this.workRequestRepository.save({ ...workRequest, ...updateWorkRequestDto });
+    return this.workRequestRepository.save({
+      ...workRequest,
+      ...updateWorkRequestDto,
+    });
   }
 
   async cancelWorkRequest(id: number) {

@@ -51,15 +51,15 @@ export class WorkRequestController {
     return this.workRequestService.getWorkRequest(id);
   }
 
-  // @UseGuards(RolesGuard)
-  // @Roles(ERoles.Admin, ERoles.User)
-  // @ApiOperation({ summary: 'Получение всех заявок пользователя' })
-  // @ApiResponse({ status: 200, type: [WorkRequest], description: 'Заявки пользователя успешно получены' })
-  // @Get('user/:userId')
-  // getUserRequests(@Param('userId', ParseIntPipe) userId: number) {
+  @UseGuards(RolesGuard)
+  @Roles(ERoles.Admin, ERoles.User)
+  @ApiOperation({ summary: 'Получение всех заявок пользователя' })
+  @ApiResponse({ status: 200, type: [WorkRequest], description: 'Заявки пользователя успешно получены' })
+  @Get('user/:userId')
+  getUserRequests(@Param('userId', ParseIntPipe) userId: number) {
 
-  //   return this.workRequestService.getUserWorkRequests(userId);
-  // }
+    return this.workRequestService.getUserWorkRequests(userId);
+  }
 
   @UseGuards(RolesGuard)
   @Roles(ERoles.Admin, ERoles.User)
