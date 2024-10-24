@@ -23,19 +23,14 @@ export class WorkRequestService {
   async createWorkRequest(dto: CreateWorkRequestDto) {
     const { startDate: startDateWorkRequest, employeeWorkTypeIds } = dto;
 
-    const employees = await this.employeeTypeService.find({
-      where: { id: In(employeeWorkTypeIds) },
-      relations: { employee: true },
-    });
+    const employees = await this.employeeTypeService.getEmployeesTypeByIdes(employeeWorkTypeIds);
     
     console.log(employees)
 
     const employee = employees[0];
     console.log(employee)
 
-    const employeeSlots = await this.slotService.find({
-      where: { id: employee.id },
-    });
+    const employeeSlots = await this.slotService.getEmployeeSlotsSchedules(employee.id);
 
     const existSlot = employeeSlots.find(
       ({ startDate }) => new Date(startDate).getTime() === new Date(startDateWorkRequest).getTime());
@@ -44,9 +39,7 @@ export class WorkRequestService {
       throw new NotFoundException('Слот уже занят');
     }
 
-    if (!employees.length) {
-      throw new NotFoundException('Сотрудники с указанными типами работы не найдены');
-    }
+ 
 
     const workRequest = this.workRequestRepository.create({
       ...dto,
@@ -71,17 +64,8 @@ export class WorkRequestService {
   }
 
   async getUserWorkRequests(id: number) {
-    // const workRequests = await this.userService.find({
-    //   where: { id },
-    //   relations: ['workRequest'],
-    // });
-
-    // console.log(workRequests, 'USER WORK REQUEST');
-    // if (!workRequests.length) {
-    //   throw new NotFoundException(`Заявки пользователя с ID ${id} не найдены`);
-    // }
-
-    // return workRequests;
+   
+    return this.userService.getWorkRequestsByUserId(id);
   }
 
   async updateWorkRequest(
