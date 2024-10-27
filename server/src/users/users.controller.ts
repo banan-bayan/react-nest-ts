@@ -8,7 +8,7 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import { ERoles } from 'src/Types';
 
 @ApiTags('Пользователи')
-@Controller('api/users')
+@Controller('users')
 @UseGuards(RolesGuard)
 @Roles(ERoles.Admin)
 export class UsersController {

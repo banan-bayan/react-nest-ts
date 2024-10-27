@@ -18,7 +18,7 @@ import { ERoles } from 'src/Types';
 
 
 @ApiTags('Заявки на работу')
-@Controller('api/work-request')
+@Controller('work-request')
 export class WorkRequestController {
   constructor(private readonly workRequestService: WorkRequestService) {}
 

@@ -8,7 +8,7 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import { ERoles } from 'src/Types';
 
 @ApiTags('Временной слот сотрудника')
-@Controller('api/employee-slot-schedule')
+@Controller('employee-slot-schedule')
 @UseGuards(RolesGuard)
 @Roles(ERoles.Admin)
 export class EmployeeSlotScheduleController {

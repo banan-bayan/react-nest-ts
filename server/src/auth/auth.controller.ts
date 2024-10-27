@@ -5,7 +5,7 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { CreateAuthUserDto } from 'src/auth/dto/auth-user.dto';
 
 @ApiTags('Авторизация')
-@Controller('api/auth')
+@Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
