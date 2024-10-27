@@ -9,8 +9,8 @@ import { ERoles } from 'src/Types';
 
 @ApiTags('Базовое расписание сотрудников')
 @Controller('employee-base-schedule')
-@UseGuards(RolesGuard)
-@Roles(ERoles.Admin)
+// @UseGuards(RolesGuard)
+// @Roles(ERoles.Admin)
 export class EmployeeBaseScheduleController {
   constructor(private readonly employeeBaseScheduleService: EmployeeBaseScheduleService) {}
 

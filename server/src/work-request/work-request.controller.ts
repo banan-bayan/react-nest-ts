@@ -41,8 +41,8 @@ export class WorkRequestController {
     return this.workRequestService.getAllWorkRequests();
   }
 
-  @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin)
+  // @UseGuards(RolesGuard)
+  // @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Получение заявки' })
   @ApiResponse({ status: 200, type: WorkRequest, description: 'Заявка успешно получена' })
   @Get(':id')
@@ -51,8 +51,8 @@ export class WorkRequestController {
     return this.workRequestService.getWorkRequest(id);
   }
 
-  @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin, ERoles.User)
+  // @UseGuards(RolesGuard)
+  // @Roles(ERoles.Admin, ERoles.User)
   @ApiOperation({ summary: 'Получение всех заявок пользователя' })
   @ApiResponse({ status: 200, type: [WorkRequest], description: 'Заявки пользователя успешно получены' })
   @Get('user/:userId')
@@ -61,8 +61,8 @@ export class WorkRequestController {
     return this.workRequestService.getUserWorkRequests(userId);
   }
 
-  @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin, ERoles.User)
+  // @UseGuards(RolesGuard)
+  // @Roles(ERoles.Admin, ERoles.User)
   @ApiOperation({ summary: 'Отмена заявки пользователя' })
   @ApiResponse({ status: 200, type: WorkRequest, description: 'Заявка успешно отмена' })
   @Patch(':id')
@@ -71,8 +71,8 @@ export class WorkRequestController {
     return this.workRequestService.cancelWorkRequest(id);
   }
 
-  @UseGuards(RolesGuard)
-  @Roles(ERoles.Admin)
+  // @UseGuards(RolesGuard)
+  // @Roles(ERoles.Admin)
   @ApiOperation({ summary: 'Удаление заявки' })
   @ApiResponse({ status: 204, description: 'Заявка успешно удалена' })
   @Delete(':id')

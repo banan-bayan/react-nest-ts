@@ -9,8 +9,8 @@ import { ERoles } from 'src/Types';
 
 @ApiTags('Профессии')
 @Controller('employee-type')
-@UseGuards(RolesGuard)
-@Roles(ERoles.Admin)
+// @UseGuards(RolesGuard)
+// @Roles(ERoles.Admin)
 export class EmployeeTypeController {
   constructor(private readonly employeeTypeService: EmployeeTypeService) {}
 
