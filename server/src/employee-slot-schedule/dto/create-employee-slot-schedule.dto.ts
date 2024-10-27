@@ -7,6 +7,6 @@ export class CreateEmployeeSlotScheduleDto {
   @ApiProperty({ example: '2024-10-08T10:00:00Z', description: 'Дата и время окончания временного слота' })
   endDate: Date;
 
-  @ApiProperty({ example: 1, description: 'ID сотрудника, к которому относится временной слот' })
-  employeeId: number;
+  @ApiProperty({ example: 1, description: 'ID слота' })
+  id: number;
 }

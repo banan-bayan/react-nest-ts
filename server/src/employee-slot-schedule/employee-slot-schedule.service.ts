@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { EmployeeSlotSchedule } from './entities/employee-slot-schedule.entity';
 import { CreateEmployeeSlotScheduleDto } from './dto/create-employee-slot-schedule.dto';
 @Injectable()
@@ -33,6 +33,18 @@ export class EmployeeSlotScheduleService {
     }
 
     return employeeSlotsSchedules;
+  }
+
+  async getEmployeesSlotsSchedules(ids: number[]) {
+    const employeesSlotsSchedules = await this.employeeSlotScheduleRepository.find({
+      // where: { employeeId: In(ids) } // как найти слоты
+    });
+  
+    if (!employeesSlotsSchedules.length) {
+      throw new NotFoundException(`Слоты сотрудников с ID ${ids.join(', ')} не найдены`);
+    }
+  
+    return employeesSlotsSchedules;
   }
 
   async getEmployeeSlotSchedules(id: number) {
