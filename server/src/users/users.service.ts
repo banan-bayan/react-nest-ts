@@ -16,10 +16,6 @@ export class UsersService {
   async createUser(userDto: CreateUserDto) {
     const role = await this.roleService.getRoleByName('User');
 
-    if (!role) {
-      throw new NotFoundException('Роль "User" не найдена');
-    }
-
     const user = this.usersRepository.create({ ...userDto, roles: [role] });
 
     const newUser = await this.usersRepository.save(user);

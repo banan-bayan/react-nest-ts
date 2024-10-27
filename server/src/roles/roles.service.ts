@@ -22,7 +22,18 @@ export class RolesService {
     return roles;
   }
 
+  async getRoleById(id: number) {
+    const role = await this.roleRepository.findOne({ where: { id } });
+
+    if (!role) {
+      throw new NotFoundException(`Роль с ID ${id} не найдена`);
+    }
+
+    return role;
+  }
+
   async getRoleByName(description: string) {
+    
     const role = await this.roleRepository.findOne({ where: { description } });
 
     if (!role) {
@@ -30,6 +41,12 @@ export class RolesService {
     }
 
     return role;
+  }
+
+  async removeRole(id: number) {
+    const role = await this.getRoleById(id);
+
+    return this.roleRepository.remove(role);
   }
 
 }

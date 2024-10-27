@@ -1,4 +1,4 @@
-import { Controller, Body, Get, Post, Param, UseGuards } from '@nestjs/common';
+import { Controller, Body, Get, Post, Param, UseGuards, ParseIntPipe, Delete } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { Role } from './entities/roles.entity';
 import { ApiResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -29,12 +29,27 @@ export class RolesController {
     return this.rolesService.getAllRoles();
   }
 
-  @ApiOperation({ summary: 'Получение роли' })
+  @ApiOperation({ summary: 'Получение роли по ID' })
   @ApiResponse({ status: 200, type: [Role], description: 'Роль успешно получена' })
-  @Get('/:value')
+  @Get('/:id')
+  getById(@Param('id', ParseIntPipe ) id: number) {
+
+    return this.rolesService.getRoleById(id);
+  }
+
+  @ApiOperation({ summary: 'Получение роли по названию' })
+  @ApiResponse({ status: 200, type: [Role], description: 'Роль успешно получена' })
+  @Get('/role/:value')
   getByValue(@Param('value') value: string) {
 
     return this.rolesService.getRoleByName(value);
   }
 
+  @ApiOperation({ summary: 'Удаление роли' })
+  @ApiResponse({ status: 204, type: [Role], description: 'Роль успешно удалена' })
+  @Delete('/:id')
+  remove(@Param('id', ParseIntPipe ) id: number) {
+
+    return this.rolesService.removeRole(id);
+  }
 }
