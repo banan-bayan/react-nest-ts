@@ -9,6 +9,7 @@ import { EmployeeTypeService } from 'src/employee-type/employee-type.service';
 import { UsersService } from 'src/users/users.service';
 import { EmployeeSlotSchedule } from 'src/employee-slot-schedule/entities/employee-slot-schedule.entity';
 import { EmployeeSlotScheduleService } from 'src/employee-slot-schedule/employee-slot-schedule.service';
+import { EmployeeService } from 'src/employee/employee.service';
 
 @Injectable()
 export class WorkRequestService {
@@ -18,35 +19,52 @@ export class WorkRequestService {
     private employeeTypeService: EmployeeTypeService,
     private userService: UsersService,
     private slotService: EmployeeSlotScheduleService,
+    private employeeService: EmployeeService
   ) {}
 
   async createWorkRequest(dto: CreateWorkRequestDto) {
-    const { startDate: startDateWorkRequest, employeeWorkTypeIds } = dto;
+    const {
+      startDate: startDateWorkRequest,
+      employeeWorkTypeIds,
+      employeeId = null,
+    } = dto;
 
-    const employees = await this.employeeTypeService.getEmployeesTypeByIdes(employeeWorkTypeIds);
-    
-    console.log(employees)
+    if (employeeId) {
+      const employee = await this.employeeService.getEmployee(employeeId);
+      console.log(employee, 'EMP IF HAVE ID')
 
-    const employee = employees[0];
-    console.log(employee)
+    } else {
+      const employees =
+        await this.employeeTypeService.getEmployeesTypeByIdes(
+          employeeWorkTypeIds,
+        ); // достал типы выбранные пользователем, вместе с сотрудниками
 
-    const employeeSlots = await this.slotService.getEmployeeSlotsSchedules(employee.id);
+      console.log(employees, 'EMPS difference TYPEs choose user');
 
-    const existSlot = employeeSlots.find(
-      ({ startDate }) => new Date(startDate).getTime() === new Date(startDateWorkRequest).getTime());
+      const employee = employees[0];
+      console.log(employee);
 
-    if (existSlot) {
-      throw new NotFoundException('Слот уже занят');
+      const employeeSlots = await this.slotService.getEmployeeSlotsSchedules(
+        employee.id,
+      );
+
+      const existSlot = employeeSlots.find(
+        ({ startDate }) =>
+          new Date(startDate).getTime() ===
+          new Date(startDateWorkRequest).getTime(),
+      );
+
+      if (existSlot) {
+        throw new NotFoundException('Слот уже занят');
+      }
+
+      const workRequest = this.workRequestRepository.create({
+        ...dto,
+        status: WorkRequestStatus.WAITING,
+      });
+
+      return this.workRequestRepository.save(workRequest);
     }
-
- 
-
-    const workRequest = this.workRequestRepository.create({
-      ...dto,
-      status: WorkRequestStatus.WAITING,
-    });
-
-    return this.workRequestRepository.save(workRequest);
   }
 
   async getAllWorkRequests() {
@@ -64,7 +82,6 @@ export class WorkRequestService {
   }
 
   async getUserWorkRequests(id: number) {
-   
     return this.userService.getWorkRequestsByUserId(id);
   }
 

@@ -22,7 +22,7 @@ export class EmployeeService {
   }
 
   async getEmployee(id: number) {
-    const employee = await this.employeeRepository.findOneBy({id});
+    const employee = await this.employeeRepository.find({where: {id}, relations: { slotSchedules: true }});
 
     if (!employee) {
       throw new NotFoundException(`Сотрудник с ID ${id} не найден`);
