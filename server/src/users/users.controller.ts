@@ -14,8 +14,8 @@ import { ERoles } from 'src/Types';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @ApiOperation({ summary: 'Регистрация нового пользователя' })
-  @ApiResponse({ status: 201, type: User, description: 'Пользователь успешно зареган' })
+  @ApiOperation({ summary: 'Создание нового пользователя' })
+  @ApiResponse({ status: 201, type: User, description: 'Пользователь успешно создан' })
   @Post()
   create(@Body() userDto: CreateUserDto) {
 
@@ -33,9 +33,17 @@ export class UsersController {
   @ApiOperation({ summary: 'Получение пользователя' })
   @ApiResponse({ status: 200, type: User, description: 'Пользователь успешно получен' })
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOneById(@Param('id', ParseIntPipe) id: number) {
 
     return this.usersService.getUserById(id);
+  }
+
+  @ApiOperation({ summary: 'Получение пользователя' })
+  @ApiResponse({ status: 200, type: User, description: 'Пользователь успешно получен' })
+  @Get('/email/:value')
+  findOneByEmail(@Param('value') value: string) {
+
+    return this.usersService.getUserByEmail(value);
   }
 
   @ApiOperation({ summary: 'Удаление пользователя' })

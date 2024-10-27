@@ -16,10 +16,10 @@ export class UsersService {
   async createUser(userDto: CreateUserDto) {
     const role = await this.roleService.getRoleByName('User');
 
-    const user = this.usersRepository.create({ ...userDto, roles: [role] });
-
+    const user = this.usersRepository.create({ ...userDto, roles: [role] });  // TODO обработать ошибку когда пытаешься создать пользователся если уже есть такой EMAil
+  
     const newUser = await this.usersRepository.save(user);
-
+   
     return newUser;
   }
 
@@ -36,6 +36,10 @@ export class UsersService {
       where: { email },
       relations: { roles: true },
     });
+    
+    if (!user) {
+      throw new NotFoundException(`Пользователь с EMAIL ${email} не найден`);
+    }
 
     return user;
   }
@@ -44,7 +48,7 @@ export class UsersService {
     const user = await this.usersRepository.findOneBy({ id });
 
     if (!user) {
-      throw new Error(`Пользователь с ID ${id} не найден`);
+      throw new NotFoundException(`Пользователь с ID ${id} не найден`);
     }
 
     return user;
