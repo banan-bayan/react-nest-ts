@@ -32,7 +32,18 @@ export class WorkRequestService {
     if (employeeId) {
       const employee = await this.employeeService.getEmployee(employeeId);
       console.log(employee, 'EMP IF HAVE ID')
+      console.log(employee[0].slotSchedules, 'EMP slots')
+      
 
+      const existSlot = employee[0].slotSchedules.find(({ startDate }) => {
+        console.log(startDate, 'START DATE')
+        console.log(startDateWorkRequest, 'USER WORK REQUEST')
+          new Date(startDate).getTime() === new Date(startDateWorkRequest).getTime()
+    });
+
+      if (existSlot) {
+        throw new NotFoundException('Слот уже занят');
+      }
     } else {
       const employees =
         await this.employeeTypeService.getEmployeesTypeByIdes(
