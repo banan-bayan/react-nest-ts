@@ -8,5 +8,5 @@ export class CreateEmployeeWorkTypeDto {
   readonly price: number;
 
   @ApiProperty({ example: 1, description: 'Идентификатор типа сотрудника' })
-  readonly employeeTypeId: number;
+  readonly id: number;
 }

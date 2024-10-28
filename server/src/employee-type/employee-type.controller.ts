@@ -35,7 +35,7 @@ export class EmployeeTypeController {
   @Get('/:id')
   getOne(@Param('id', ParseIntPipe) id: number) {
 
-    return this.employeeTypeService.getEmployeeType(id);
+    return this.employeeTypeService.getEmployeeTypeById(id);
   }
 
   @ApiOperation({ summary: 'Удалить профессию' })

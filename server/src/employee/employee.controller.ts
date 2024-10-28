@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, UseGuards, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Param, Delete, ParseIntPipe, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { EmployeeService } from './employee.service';
 import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
@@ -17,15 +18,16 @@ export class EmployeeController {
   @ApiOperation({ summary: 'Создание сотрудника' })
   @ApiResponse({ status: 201, type: Employee, description: 'Сотрудник успешно создан' })
   @Post()
-  create(@Body() employeeDto: CreateEmployeeDto) {
-
-    return this.employeeService.createEmployee(employeeDto);
+  async create(@Body() employeeDto: CreateEmployeeDto, @Res() res: Response) {
+    await this.employeeService.createEmployee(employeeDto);
+    
+    return res.status(201).send('Сотрудник успешно создан')
   }
 
   @ApiOperation({ summary: 'Получение списка сотрудников' }) 
   @ApiResponse({ status: 200, type: [Employee], description: 'Список всех сотрудников успешно получен' })
   @Get()
-  getAll() {
+  async getAll() {
     
     return this.employeeService.getAllEmployees();
   }
@@ -33,7 +35,7 @@ export class EmployeeController {
   @ApiOperation({ summary: 'Получение сотрудника' })
   @ApiResponse({ status: 200, type: Employee, description: 'Сотрудник успешно получен' })
   @Get(':id')
-  getOne(@Param('id', ParseIntPipe) id: number) {
+  async getOne(@Param('id', ParseIntPipe) id: number) {
 
     return this.employeeService.getEmployee(id)
   }
@@ -41,8 +43,9 @@ export class EmployeeController {
   @ApiOperation({ summary: 'Удаление сотрудника' })
   @ApiResponse({ status: 204, description: 'Сотрудник успешно удален' })
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number) {
+  async delete(@Param('id', ParseIntPipe) id: number, @Res() res: Response) {
+    await this.employeeService.deleteEmployee(id);
 
-    return this.employeeService.deleteEmployee(id)
+    return res.status(204).send('Сотрудник успешно удален');
   }
 }

@@ -11,7 +11,7 @@ export class Employee {
 
   @Column({ type: 'varchar' })
   name: string;
-
+  
   @ManyToOne(() => EmployeeType, (employeeType) => employeeType)
   type: EmployeeType;
 

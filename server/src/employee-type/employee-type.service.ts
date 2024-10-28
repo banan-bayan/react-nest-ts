@@ -22,7 +22,7 @@ export class EmployeeTypeService {
     return this.employeeTypeRepository.find();
   }
 
-  async getEmployeeType(id: number): Promise<EmployeeType> {
+  async getEmployeeTypeById(id: number): Promise<EmployeeType> {
     const employeeType = await this.employeeTypeRepository.findOneBy({ id });
 
     if (!employeeType) {
@@ -33,7 +33,7 @@ export class EmployeeTypeService {
   }
 
   async removeEmployeeType(id: number): Promise<EmployeeType> {
-    const employeeType = await this.getEmployeeType(id);
+    const employeeType = await this.getEmployeeTypeById(id);
 
     return this.employeeTypeRepository.remove(employeeType);
   }

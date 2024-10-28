@@ -14,13 +14,17 @@ export class UsersService {
   ) {}
 
   async createUser(userDto: CreateUserDto) {
+    try {
     const role = await this.roleService.getRoleByName('User');
-
-    const user = this.usersRepository.create({ ...userDto, roles: [role] });  // TODO обработать ошибку когда пытаешься создать пользователся если уже есть такой EMAil
   
-    const newUser = await this.usersRepository.save(user);
-   
-    return newUser;
+    const user = this.usersRepository.create({ ...userDto, roles: [role] }); 
+  
+    return await this.usersRepository.save(user);
+    } catch(e) {
+      
+      throw new NotFoundException(`Пчтото пошло ннетак} не найден`);
+ // TODO обработать ошибку 
+    }
   }
 
   async getAllUsers() {
