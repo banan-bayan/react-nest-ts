@@ -21,7 +21,7 @@ export class EmployeeController {
   async create(@Body() employeeDto: CreateEmployeeDto, @Res() res: Response) {
     await this.employeeService.createEmployee(employeeDto);
     
-    return res.status(201).send('Сотрудник успешно создан')
+    return res.status(201).json({ message:  'Сотрудник успешно создан'});
   }
 
   @ApiOperation({ summary: 'Получение списка сотрудников' }) 
@@ -46,6 +46,6 @@ export class EmployeeController {
   async delete(@Param('id', ParseIntPipe) id: number, @Res() res: Response) {
     await this.employeeService.deleteEmployee(id);
 
-    return res.status(204).send('Сотрудник успешно удален');
+    return res.status(204).json({ message: 'Сотрудник успешно удален' });
   }
 }

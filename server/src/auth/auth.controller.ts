@@ -1,8 +1,9 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { CreateAuthUserDto } from 'src/auth/dto/auth-user.dto';
+import { Response } from 'express';
 
 @ApiTags('Авторизация')
 @Controller('auth')
@@ -13,7 +14,7 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Пользователь успешно авторизован' })
   @ApiResponse({ status: 401, description: 'Неверные учетные данные' })
   @Post('/login')
-  login(@Body() userDto: CreateAuthUserDto) {
+  async login(@Body() userDto: CreateAuthUserDto) {
     
     return this.authService.login(userDto);
   }
@@ -22,9 +23,11 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'Пользователь успешно зарегистрирован' })
   @ApiResponse({ status: 400, description: 'Ошибка при регистрации' })
   @Post('/registration')
-  registration(@Body() userDto: CreateUserDto) {
+  async registration(@Body() userDto: CreateUserDto, @Res() res: Response) {
 
-    return this.authService.registration(userDto);
+    await this.authService.registration(userDto);
+
+    return res.status(201).json({ message: 'Пользователь успешно зарегистрирован' })
   }
 
 }

@@ -1,4 +1,4 @@
-import { Controller, Body, Get, Post, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
+import { Controller, Body, Get, Post, Param, Delete, UseGuards, ParseIntPipe, Res } from '@nestjs/common';
 import { EmployeeBaseScheduleService } from './employee-base-schedule.service';
 import { EmployeeBaseSchedule } from './entities/employee-base-schedule.entity';
 import { CreateEmployeeBaseScheduleDto } from './dto/create-employee-base-schedule.dto';
@@ -6,6 +6,7 @@ import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { Roles } from 'src/auth/roles-auth.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { ERoles } from 'src/Types';
+import { Response } from 'express';
 
 @ApiTags('Базовое расписание сотрудников')
 @Controller('employee-base-schedule')
@@ -18,15 +19,17 @@ export class EmployeeBaseScheduleController {
   @ApiOperation({ summary: 'Создать базовое расписание сотрудника' })
   @ApiResponse({ status: 201, type: EmployeeBaseSchedule, description: 'Базовое расписание успешно создано' })
   @Post()
-  create(@Body() employeeBaseScheduleDto: CreateEmployeeBaseScheduleDto) {
+  async create(@Body() employeeBaseScheduleDto: CreateEmployeeBaseScheduleDto, @Res() res: Response) {
     
-    return this.employeeBaseScheduleService.createEmployeeBaseSchedule(employeeBaseScheduleDto);
+    await this.employeeBaseScheduleService.createEmployeeBaseSchedule(employeeBaseScheduleDto);
+
+    return res.status(201).json({message: 'Базовое расписание успешно создано'})
   }
 
   @ApiOperation({ summary: 'Получить все базовые расписания сотрудников' })
   @ApiResponse({ status: 200, type: [EmployeeBaseSchedule], description: 'Список базовых расписаний успешно получен' })
   @Get()
-  getAll() {
+  async getAll() {
 
     return this.employeeBaseScheduleService.getAllEmployeeBaseSchedule();
   }
@@ -34,7 +37,7 @@ export class EmployeeBaseScheduleController {
   @ApiOperation({ summary: 'Получить базовое расписание сотрудника' })
   @ApiResponse({ status: 200, type: [EmployeeBaseSchedule], description: 'Базовое расписание сотрудника успешно получено' })
   @Get('/:id')
-  getAllEmployee(@Param('id', ParseIntPipe) id: number) {
+  async getAllEmployee(@Param('id', ParseIntPipe) id: number) {
 
     return this.employeeBaseScheduleService.getEmployeeBaseSchedule(id);
   }
@@ -42,8 +45,10 @@ export class EmployeeBaseScheduleController {
   @ApiOperation({ summary: 'Удалить базовое расписание сотрудника' })
   @ApiResponse({ status: 204, description: 'Базовое расписание сотрудника успешно удалено' })
   @Delete('/:id')
-  delete(@Param('id', ParseIntPipe) id: number) {
+  async delete(@Param('id', ParseIntPipe) id: number, @Res() res: Response) {
 
-    return this.employeeBaseScheduleService.removeEmployeeBaseSchedule(id);
+    await this.employeeBaseScheduleService.removeEmployeeBaseSchedule(id);
+    
+    return res.status(204).json({message: 'Базовое расписание сотрудника успешно удалено'})
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/users.entity';
 import { Repository } from 'typeorm';
@@ -22,8 +22,7 @@ export class UsersService {
     return await this.usersRepository.save(user);
     } catch(e) {
       
-      throw new NotFoundException(`Пчтото пошло ннетак} не найден`);
- // TODO обработать ошибку 
+      throw new ConflictException(`Пользователь с таким email "${userDto.email}" уже существует`);
     }
   }
 

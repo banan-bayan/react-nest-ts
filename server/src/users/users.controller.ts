@@ -1,4 +1,4 @@
-import { Controller, Body, Post, Get, UseGuards, Delete, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Body, Post, Get, UseGuards, Delete, Param, ParseIntPipe, Res } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -6,6 +6,7 @@ import { User } from './entities/users.entity';
 import { Roles } from 'src/auth/roles-auth.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { ERoles } from 'src/Types';
+import { Response } from 'express';
 
 @ApiTags('Пользователи')
 @Controller('users')
@@ -17,15 +18,18 @@ export class UsersController {
   @ApiOperation({ summary: 'Создание нового пользователя' })
   @ApiResponse({ status: 201, type: User, description: 'Пользователь успешно создан' })
   @Post()
-  create(@Body() userDto: CreateUserDto) {
+  async create(@Body() userDto: CreateUserDto, @Res() res: Response) {
 
-    return this.usersService.createUser(userDto);
+    await this.usersService.createUser(userDto);
+
+    return res.status(201).json({message: 'Пользователь успешно создан'});
+
   }
 
   @ApiOperation({ summary: 'Получение списка всех пользователей' })
   @ApiResponse({ status: 200, type: [User], description: 'Список пользователей успешно получен' })
   @Get()
-  getAll() {
+  async getAll() {
 
     return this.usersService.getAllUsers();
   }
@@ -33,7 +37,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Получение пользователя' })
   @ApiResponse({ status: 200, type: User, description: 'Пользователь успешно получен' })
   @Get(':id')
-  findOneById(@Param('id', ParseIntPipe) id: number) {
+  async findOneById(@Param('id', ParseIntPipe) id: number) {
 
     return this.usersService.getUserById(id);
   }
@@ -41,7 +45,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Получение пользователя' })
   @ApiResponse({ status: 200, type: User, description: 'Пользователь успешно получен' })
   @Get('/email/:value')
-  findOneByEmail(@Param('value') value: string) {
+  async findOneByEmail(@Param('value') value: string) {
 
     return this.usersService.getUserByEmail(value);
   }
@@ -49,8 +53,11 @@ export class UsersController {
   @ApiOperation({ summary: 'Удаление пользователя' })
   @ApiResponse({ status: 204, description: 'Пользователь успешно удален' })
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  async remove(@Param('id', ParseIntPipe) id: number, @Res() res: Response) {
 
-    return this.usersService.removeUser(id);
+    await this.usersService.removeUser(id);
+
+    return res.status(204).json({message: 'Пользователь успешно удален'});
+
   }
 }

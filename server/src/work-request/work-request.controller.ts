@@ -6,7 +6,8 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards, ParseIntPipe
+  UseGuards, ParseIntPipe,
+  Res
 } from '@nestjs/common';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles-auth.decorator';
@@ -15,6 +16,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { WorkRequest } from './entities/work-request.entity';
 import { CreateWorkRequestDto } from './dto/create-work-request.dto';
 import { ERoles } from 'src/Types';
+import { Response } from 'express';
 
 
 @ApiTags('Заявки на работу')
@@ -27,16 +29,19 @@ export class WorkRequestController {
   @ApiOperation({ summary: 'Создание новой заявки' })
   @ApiResponse({ status: 201, type: WorkRequest, description: 'Заявка успешно создана' })
   @Post()
-  create(@Body() workRequestDto: CreateWorkRequestDto) {
+  async create(@Body() workRequestDto: CreateWorkRequestDto, @Res() res: Response) {
 
-    return this.workRequestService.createWorkRequest(workRequestDto);
+    await this.workRequestService.createWorkRequest(workRequestDto);
+
+    return res.status(201).json({message: 'Заявка успешно создана'});
+
   }
 
 
   @ApiOperation({ summary: 'Получение всех заявок' })
   @ApiResponse({ status: 200, type: [WorkRequest], description: 'Список всех заявок успешно получены' })
   @Get()
-  getAll() {
+  async getAll() {
 
     return this.workRequestService.getAllWorkRequests();
   }
@@ -46,7 +51,7 @@ export class WorkRequestController {
   @ApiOperation({ summary: 'Получение заявки' })
   @ApiResponse({ status: 200, type: WorkRequest, description: 'Заявка успешно получена' })
   @Get(':id')
-  getOne(@Param('id', ParseIntPipe) id: number) {
+  async getOne(@Param('id', ParseIntPipe) id: number) {
 
     return this.workRequestService.getWorkRequest(id);
   }
@@ -56,7 +61,7 @@ export class WorkRequestController {
   @ApiOperation({ summary: 'Получение всех заявок пользователя' })
   @ApiResponse({ status: 200, type: [WorkRequest], description: 'Заявки пользователя успешно получены' })
   @Get('user/:userId')
-  getUserRequests(@Param('userId', ParseIntPipe) userId: number) {
+  async getUserRequests(@Param('userId', ParseIntPipe) userId: number) {
 
     return this.workRequestService.getUserWorkRequests(userId);
   }
@@ -66,7 +71,7 @@ export class WorkRequestController {
   @ApiOperation({ summary: 'Отмена заявки пользователя' })
   @ApiResponse({ status: 200, type: WorkRequest, description: 'Заявка успешно отмена' })
   @Patch(':id')
-  cancel(@Param('id', ParseIntPipe) id: number) {
+  async cancel(@Param('id', ParseIntPipe) id: number) {
 
     return this.workRequestService.cancelWorkRequest(id);
   }
@@ -76,9 +81,12 @@ export class WorkRequestController {
   @ApiOperation({ summary: 'Удаление заявки' })
   @ApiResponse({ status: 204, description: 'Заявка успешно удалена' })
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  async remove(@Param('id', ParseIntPipe) id: number, @Res() res: Response) {
 
-    return this.workRequestService.removeWorkRequest(id);
+    await this.workRequestService.removeWorkRequest(id);
+
+    return res.status(204).json({message: 'Заявка успешно удалена'});
+
   }
 }
 
