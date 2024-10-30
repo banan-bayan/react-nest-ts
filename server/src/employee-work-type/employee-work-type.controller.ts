@@ -39,7 +39,7 @@ export class EmployeeWorkTypeController {
   @Get('/:id')
   async getOne(@Param('id', ParseIntPipe) id: number) {
 
-    return this.employeeWorkTypeService.getEmployeeWorkType(id);
+    return this.employeeWorkTypeService.getEmployeeWorkTypeById(id);
   }
 
   @ApiOperation({ summary: 'Удалить тип работ' })

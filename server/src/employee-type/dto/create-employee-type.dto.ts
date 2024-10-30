@@ -6,4 +6,7 @@ export class CreateEmployeeTypeDto {
 
   @ApiProperty({ example: 1, description: 'Идентификатор специалиста' })
   readonly id: number;
+
+  @ApiProperty({ example: 1, description: 'Идентификатор типа работы' })
+  readonly workTypeId: number;
 }

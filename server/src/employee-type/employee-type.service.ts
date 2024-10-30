@@ -3,18 +3,22 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EmployeeType } from './entities/employee-type.entity';
 import { Repository, In } from 'typeorm';
 import { CreateEmployeeTypeDto } from './dto/create-employee-type.dto';
+import { EmployeeWorkTypeService } from 'src/employee-work-type/employee-work-type.service';
 
 @Injectable()
 export class EmployeeTypeService {
   constructor(
     @InjectRepository(EmployeeType)
-    private readonly employeeTypeRepository: Repository<EmployeeType>
+     private readonly employeeTypeRepository: Repository<EmployeeType>,
+     private employeeWorkTypeService: EmployeeWorkTypeService
   ) {}
 
   async createEmployeeType(dto: CreateEmployeeTypeDto): Promise<EmployeeType> {
     const employeeType = this.employeeTypeRepository.create(dto);
 
-    return this.employeeTypeRepository.save(employeeType);
+    const employeeWorkType = await this.employeeWorkTypeService.getEmployeeWorkTypeById(dto.workTypeId);
+
+    return this.employeeTypeRepository.save({ ...employeeType, employeeWorkType });
   }
 
   async getAllEmployeeType(): Promise<EmployeeType[]> {

@@ -14,11 +14,28 @@ import { EmployeeSlotSchedule } from 'src/employee-slot-schedule/entities/employ
 import { EmployeeSlotScheduleService } from 'src/employee-slot-schedule/employee-slot-schedule.service';
 import { EmployeeService } from 'src/employee/employee.service';
 import { Employee } from 'src/employee/entities/employee.entity';
-
+import { EmployeeWorkTypeModule } from 'src/employee-work-type/employee-work-type.module';
 @Module({
   controllers: [WorkRequestController],
-  providers: [WorkRequestService, EmployeeTypeService, UsersService, RolesService, EmployeeSlotScheduleService, EmployeeService],
-  imports: [TypeOrmModule.forFeature([WorkRequest, EmployeeType, User, Role, EmployeeSlotSchedule, Employee]), forwardRef(() => AuthModule)]
+  providers: [
+    WorkRequestService,
+    EmployeeTypeService,
+    UsersService,
+    RolesService,
+    EmployeeSlotScheduleService,
+    EmployeeService,
+    
+  ],
+  imports: [
+    TypeOrmModule.forFeature([
+      WorkRequest,
+      EmployeeType,
+      User,
+      Role,
+      EmployeeSlotSchedule,
+      Employee,
+    ]),
+    forwardRef(() => AuthModule),forwardRef(() => EmployeeWorkTypeModule)
+  ],
 })
-
 export class WorkRequestModule {}

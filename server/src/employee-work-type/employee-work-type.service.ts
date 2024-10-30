@@ -20,7 +20,7 @@ export class EmployeeWorkTypeService {
     return employeeWorkTypes;
   }
 
-  async getEmployeeWorkType(id: number) {
+  async getEmployeeWorkTypeById(id: number) {
     const employeeWorkType = await this.employeeWorkTypeRepository.findOneBy({id});
 
     if (!employeeWorkType) {
@@ -31,7 +31,7 @@ export class EmployeeWorkTypeService {
   }
 
   async removeEmployeeWorkType(id: number) {
-    const employeeWorkType = await this.getEmployeeWorkType(id);
+    const employeeWorkType = await this.getEmployeeWorkTypeById(id);
 
     return this.employeeWorkTypeRepository.remove(employeeWorkType);
   }

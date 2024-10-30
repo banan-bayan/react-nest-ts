@@ -7,4 +7,6 @@ export class CreateEmployeeDto {
   @ApiProperty({ example: 'Путин Владимир Владимирович', description: 'ФИО сотрудника' })
   readonly name: string;
 
+  @ApiProperty({ example: 2, description: 'Идентификатор типа сотрудника' })
+  readonly typeId: number;
 }

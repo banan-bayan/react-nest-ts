@@ -155,7 +155,7 @@ export class DataSeedService {
     }]
 
     const validWorkTypes = empWorkTypes.filter(workType => workType.employeeType.length > 0);
-    
+
     await this.empWorkTypeRepository.save(validWorkTypes);
     this.logger.log('Work types seeded');
   }

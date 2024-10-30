@@ -15,12 +15,9 @@ export class EmployeeService {
 
   async createEmployee(dto: CreateEmployeeDto) {
 
+    const type = await this.employeeType.getEmployeeTypeById(dto.typeId);
 
-    // const employeeType = await this.employeeType.getEmployeeTypeById(1);
-
-    // const user = this.usersRepository.create({ ...userDto, roles: [role] }); 
-    
-    const employee = this.employeeRepository.create(dto);  // TODO связать typeId
+    const employee = this.employeeRepository.create({ ...dto, type });
 
     return this.employeeRepository.save(employee);
   }

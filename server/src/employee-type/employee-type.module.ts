@@ -4,10 +4,11 @@ import { EmployeeTypeController } from './employee-type.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EmployeeType } from 'src/employee-type/entities/employee-type.entity';
 import { AuthModule } from 'src/auth/auth.module';
-
+import { EmployeeWorkType } from 'src/employee-work-type/entities/employee-work-type.entity';
+import { EmployeeWorkTypeService } from 'src/employee-work-type/employee-work-type.service';
 @Module({
   controllers: [EmployeeTypeController],
-  providers: [EmployeeTypeService],
-  imports: [TypeOrmModule.forFeature([EmployeeType]), forwardRef(() => AuthModule)],
+  providers: [EmployeeTypeService, EmployeeWorkTypeService],
+  imports: [TypeOrmModule.forFeature([EmployeeType, EmployeeWorkType]), forwardRef(() => AuthModule)],
 })
 export class EmployeeTypeModule {}
