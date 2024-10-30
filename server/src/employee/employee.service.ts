@@ -29,18 +29,20 @@ export class EmployeeService {
     return employees;
   }
 
-  async getEmployee(id: number) {
-    const employee = await this.employeeRepository.find({where: {id}, relations: { slotSchedules: true }});
+  async getEmployeeById(id: number) {
+    const employee = await this.employeeRepository.findOne({where: {id}, relations: { slotSchedules: true }});
 
-    if (!employee.length) {
+    if (!employee) {
       throw new NotFoundException(`Сотрудник с ID ${id} не найден`);
     }
 
     return employee;
   }
 
+
+
   async deleteEmployee(id: number) {
-     const employee = await this.getEmployee(id);
+     const employee = await this.getEmployeeById(id);
     
      return  this.employeeRepository.remove(employee)
   }

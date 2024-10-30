@@ -3,17 +3,23 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { EmployeeSlotSchedule } from './entities/employee-slot-schedule.entity';
 import { CreateEmployeeSlotScheduleDto } from './dto/create-employee-slot-schedule.dto';
+import { EmployeeService } from 'src/employee/employee.service';
+
 @Injectable()
 export class EmployeeSlotScheduleService {
   constructor(
     @InjectRepository(EmployeeSlotSchedule)
     private employeeSlotScheduleRepository: Repository<EmployeeSlotSchedule>,
+    private employeeService: EmployeeService
   ) {}
 
-  async createEmployeeSlotSchedule(dto: CreateEmployeeSlotScheduleDto) {
+  async createEmployeeSlotSchedule(dto: CreateEmployeeSlotScheduleDto): Promise<EmployeeSlotSchedule> {
     const employeeSlotSchedule = this.employeeSlotScheduleRepository.create(dto);
-    await this.employeeSlotScheduleRepository.save(employeeSlotSchedule);
-
+  
+    const employee = await this.employeeService.getEmployeeById(dto.employeeId);
+  
+    await this.employeeSlotScheduleRepository.save({...employeeSlotSchedule, employee});
+  
     return employeeSlotSchedule;
   }
   

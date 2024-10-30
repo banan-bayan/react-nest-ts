@@ -37,7 +37,7 @@ export class EmployeeController {
   @Get(':id')
   async getOne(@Param('id', ParseIntPipe) id: number) {
 
-    return this.employeeService.getEmployee(id)
+    return this.employeeService.getEmployeeById(id)
   }
 
   @ApiOperation({ summary: 'Удаление сотрудника' })

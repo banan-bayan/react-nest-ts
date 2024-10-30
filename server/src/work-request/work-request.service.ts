@@ -30,7 +30,7 @@ export class WorkRequestService {
     } = dto;
 
     if (employeeId) {
-      const employee = await this.employeeService.getEmployee(employeeId);
+      const employee = await this.employeeService.getEmployeeById(employeeId);
       console.log(employee, 'EMP IF HAVE ID')
       console.log(employee[0].slotSchedules, 'EMP slots')
       

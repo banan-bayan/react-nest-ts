@@ -10,5 +10,6 @@ import { EmployeeWorkTypeService } from 'src/employee-work-type/employee-work-ty
   controllers: [EmployeeTypeController],
   providers: [EmployeeTypeService, EmployeeWorkTypeService],
   imports: [TypeOrmModule.forFeature([EmployeeType, EmployeeWorkType]), forwardRef(() => AuthModule)],
+  exports: [EmployeeTypeService]
 })
 export class EmployeeTypeModule {}
