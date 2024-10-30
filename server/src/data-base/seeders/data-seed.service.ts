@@ -6,18 +6,22 @@ import { EmployeeType } from 'src/employee-type/entities/employee-type.entity';
 import { EmployeeBaseSchedule } from 'src/employee-base-schedule/entities/employee-base-schedule.entity';
 import { Role } from 'src/roles/entities/roles.entity';
 import { User } from 'src/users/entities/users.entity';
+import { EmployeeWorkType } from 'src/employee-work-type/entities/employee-work-type.entity';
+
 import * as bcrypt from 'bcryptjs';
+import e from 'express';
 
 @Injectable()
 export class DataSeedService {
   private readonly logger = new Logger(DataSeedService.name);
 
   constructor(
-    @InjectRepository(Employee) private employeeRepository: Repository<Employee>,
-    @InjectRepository(EmployeeType) private employeeTypeRepository: Repository<EmployeeType>,
+    @InjectRepository(Employee) private empRepository: Repository<Employee>,
+    @InjectRepository(EmployeeType) private empTypeRepository: Repository<EmployeeType>,
     @InjectRepository(EmployeeBaseSchedule) private baseScheduleRepository: Repository<EmployeeBaseSchedule>,
     @InjectRepository(Role) private roleRepository: Repository<Role>,
     @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(EmployeeWorkType) private empWorkTypeRepository: Repository<EmployeeWorkType>
   ) {}
 
   async seed() {
@@ -26,10 +30,11 @@ export class DataSeedService {
     await this.seedRoles();
     await this.seedUsers();
     await this.seedEmployeeBaseSchedules();
+    await this.seedEmployeeWorkType();
   }
 
   private async seedEmployeeTypes() {
-    const typeCount = await this.employeeTypeRepository.count();
+    const typeCount = await this.empTypeRepository.count();
     if (typeCount > 0) return;
 
     const employeeTypes = [
@@ -38,21 +43,21 @@ export class DataSeedService {
       { title: 'Кухарка' },
     ];
 
-    await this.employeeTypeRepository.save(employeeTypes);
+    await this.empTypeRepository.save(employeeTypes);
     this.logger.log('Employee types seeded');
   }
 
   private async seedEmployees() {
-    const employeeCount = await this.employeeRepository.count();
+    const employeeCount = await this.empRepository.count();
     if (employeeCount > 0) return;
 
-    const employeeType1 = await this.employeeTypeRepository.findOneBy({
+    const employeeType1 = await this.empTypeRepository.findOneBy({
       title: 'Электрик',
     });
-    const employeeType2 = await this.employeeTypeRepository.findOneBy({
+    const employeeType2 = await this.empTypeRepository.findOneBy({
       title: 'Техничка',
     });
-    const employeeType3 = await this.employeeTypeRepository.findOneBy({
+    const employeeType3 = await this.empTypeRepository.findOneBy({
       title: 'Кухарка',
     });
 
@@ -68,7 +73,7 @@ export class DataSeedService {
       { name: 'Артем Кошкин', type: employeeType3 },
     ];
 
-    await this.employeeRepository.save(employees);
+    await this.empRepository.save(employees);
     this.logger.log('Employees seeded');
   }
 
@@ -111,7 +116,7 @@ export class DataSeedService {
     const scheduleCount = await this.baseScheduleRepository.count();
     if (scheduleCount > 0) return;
 
-    const employees = await this.employeeRepository.find();
+    const employees = await this.empRepository.find();
 
     const baseSchedules = employees.map((employee) => ({
       employee,
@@ -121,5 +126,37 @@ export class DataSeedService {
 
     await this.baseScheduleRepository.save(baseSchedules);
     this.logger.log('Base schedules seeded');
+  }
+
+  private async seedEmployeeWorkType() {
+    const empWorkTypeCount = await this.empWorkTypeRepository.count();
+
+    const employeeTypes = await this.empTypeRepository.find(); 
+
+    if (empWorkTypeCount > 0) return;
+
+    const empWorkTypes = [{
+      title: 'Прикрутить розетку',
+      price: 555,
+      employeeType: [employeeTypes.find(type => type.title === 'Электрик')]
+    },{
+      title: 'Приготовить кексики',
+      price: 1222,
+      employeeType: [employeeTypes.find(type => type.title === 'Кухарка')],
+    },{
+
+      title: 'Помыть пол',
+      price: 42,
+      employeeType: [employeeTypes.find(type => type.title === 'Техничка')],
+    },{
+      title: 'Сварить воды',
+      price: 10000,
+      employeeType: [employeeTypes.find(type => type.title === 'Кухарка')]
+    }]
+
+    const validWorkTypes = empWorkTypes.filter(workType => workType.employeeType.length > 0);
+    
+    await this.empWorkTypeRepository.save(validWorkTypes);
+    this.logger.log('Work types seeded');
   }
 }

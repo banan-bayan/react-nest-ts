@@ -6,9 +6,9 @@ import { DataSeedService } from './data-seed.service';
 import { Role } from 'src/roles/entities/roles.entity';
 import { User } from 'src/users/entities/users.entity';
 import { EmployeeBaseSchedule } from 'src/employee-base-schedule/entities/employee-base-schedule.entity';
-
+import { EmployeeWorkType } from 'src/employee-work-type/entities/employee-work-type.entity';
 @Module({
-  imports: [TypeOrmModule.forFeature([Employee, EmployeeType, Role, User, EmployeeBaseSchedule]),],
+  imports: [TypeOrmModule.forFeature([Employee, EmployeeType, EmployeeWorkType, Role, User, EmployeeBaseSchedule]),],
   providers: [DataSeedService],
 })
 export class DataSeedModule implements OnModuleInit {
@@ -18,22 +18,3 @@ export class DataSeedModule implements OnModuleInit {
     await this.dataSeedService.seed();
   }
 }
-
-
-// app.module.ts
-
-// import { DataSeedModule } from './database/seeders/data-seed.module';
-// import { EmployeeModule } from './employee/employee.module';
-// import { EmployeeTypeModule } from './employee-type/employee-type.module';
-// import { WorkRequestModule } from './work-request/work-request.module';
-
-// @Module({
-//   imports: [
-//     TypeOrmModule.forRoot(),
-//     EmployeeModule,
-//     EmployeeTypeModule,
-//     WorkRequestModule,
-//     DataSeedModule, // Подключение модуля сидинга данных
-//   ],
-// })
-// export class AppModule {}
