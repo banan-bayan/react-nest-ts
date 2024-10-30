@@ -30,30 +30,19 @@ export class EmployeeSlotScheduleService {
     return employeeSlotSchedules;
   }
 
-  async getEmployeeSlotsSchedules(id: number) {
-    const employeeSlotsSchedules =
-      await this.employeeSlotScheduleRepository.findBy({ id });
-
+  async getEmployeeSlotsSchedulesByEmployeeId(employeeId: number) {
+    const employeeSlotsSchedules = await this.employeeSlotScheduleRepository.find({
+      where: { employee: { id: employeeId } }
+    });
+  
     if (!employeeSlotsSchedules.length) {
-      throw new NotFoundException(`Слоты сотрудника с ID ${id} не найдены`);
+      throw new NotFoundException(`Слоты сотрудника с ID ${employeeId} не найдены`);
     }
-
+  
     return employeeSlotsSchedules;
   }
 
-  async getEmployeesSlotsSchedules(ids: number[]) {
-    const employeesSlotsSchedules = await this.employeeSlotScheduleRepository.find({
-      // where: { employeeId: In(ids) } // как найти слоты
-    });
-  
-    if (!employeesSlotsSchedules.length) {
-      throw new NotFoundException(`Слоты сотрудников с ID ${ids.join(', ')} не найдены`);
-    }
-  
-    return employeesSlotsSchedules;
-  }
-
-  async getEmployeeSlotSchedules(id: number) {
+  async getEmployeeSlotSchedulesById(id: number) {
     const employeeSlotSchedules =
       await this.employeeSlotScheduleRepository.findOneBy({ id });
 
@@ -64,8 +53,23 @@ export class EmployeeSlotScheduleService {
     return employeeSlotSchedules;
   }
 
+  // async getEmployeesSlotsSchedules(ids: number[]) {
+  //   const employeesSlotsSchedules = await this.employeeSlotScheduleRepository.find({
+  //     where: { employee: In(ids) },
+  //     relations: { employee: true },
+  //   });
+  
+  //   if (!employeesSlotsSchedules.length) {
+  //     throw new NotFoundException(`Слоты сотрудников с ID ${ids.join(', ')} не найдены`);
+  //   }
+  
+  //   return employeesSlotsSchedules;
+  // }
+
+
+
   async removeEmployeeSlotSchedules(id: number) {
-    const employeeSlotSchedules = await this.getEmployeeSlotSchedules(id);
+    const employeeSlotSchedules = await this.getEmployeeSlotSchedulesById(id);
     await this.employeeSlotScheduleRepository.remove(employeeSlotSchedules);
 
     return { message: 'Временной слот сотрудника успешно удален' };

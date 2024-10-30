@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards, ParseIntPipe, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, ParseIntPipe, Res,  Query, ParseArrayPipe } from '@nestjs/common';
 import { EmployeeSlotScheduleService } from './employee-slot-schedule.service';
 import { CreateEmployeeSlotScheduleDto } from './dto/create-employee-slot-schedule.dto';
 import { EmployeeSlotSchedule } from './entities/employee-slot-schedule.entity';
@@ -36,10 +36,10 @@ export class EmployeeSlotScheduleController {
 
   @ApiOperation({ summary: 'Получить все временные слоты сотрудника' })
   @ApiResponse({ status: 200, type: [EmployeeSlotSchedule], description: 'Временные слоты сотрудника успешно получены' })
-  @Get('/:id')
+  @Get('/slots/:id')
   async getAllEmployee(@Param('id', ParseIntPipe) id: number) {
 
-    return this.employeeSlotScheduleService.getEmployeeSlotsSchedules(id);
+    return this.employeeSlotScheduleService.getEmployeeSlotsSchedulesByEmployeeId(id);
   }
 
   @ApiOperation({ summary: 'Получить временной слот сотрудника' })
@@ -47,8 +47,17 @@ export class EmployeeSlotScheduleController {
   @Get('/:id')
   async getOne(@Param('id', ParseIntPipe) id: number) {
 
-    return this.employeeSlotScheduleService.getEmployeeSlotSchedules(id);
+    return this.employeeSlotScheduleService.getEmployeeSlotSchedulesById(id);
   }
+
+  // @ApiOperation({ summary: 'Получить временные слоты некоторых сотрудников' })
+  // @ApiResponse({ status: 200, type: [EmployeeSlotSchedule], description: 'Временные слоты сотрудников успешно получены' })
+  // @Get('')
+  // async getEmployeeSlots(
+  //   @Query('ids', new ParseArrayPipe({ items: Number, separator: ',' })) ids: number[]
+  // ) {
+  //   return this.employeeSlotScheduleService.getEmployeesSlotsSchedules(ids);
+  // }
 
   @ApiOperation({ summary: 'Удалить временной слот сотрудника' })
   @ApiResponse({ status: 204, description: 'Временной слот сотрудника успешно удален' })

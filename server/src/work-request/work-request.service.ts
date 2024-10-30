@@ -62,26 +62,26 @@ export class WorkRequestService {
       console.log(employees, 'EMPS difference TYPEs choose user');
       
       // а пользователь может выбирать только один слот времени, на разные типы работ и на разных специалистов ?
-      const  map = employees.map(async ({ id }) => {
-        const employeeSlots = await this.slotService.getEmployeeSlotsSchedules(id);
+      // const  map = employees.map(async ({ id }) => {
+      //   const employeeSlots = await this.slotService.getEmployeesSlotsSchedules(id);
 
-        const existSlot = employeeSlots.find(({ startDate }) => {
-          new Date(startDate).getTime() === new Date(startDateWorkRequest).getTime()
-        });
+      //   const existSlot = employeeSlots.find(({ startDate }) => {
+      //     new Date(startDate).getTime() === new Date(startDateWorkRequest).getTime()
+      //   });
 
-        if (existSlot) {
-          throw new NotFoundException('Слот уже занят');
-        }
+      //   if (existSlot) {
+      //     throw new NotFoundException('Слот уже занят');
+      //   }
 
-        // тут привязка к работнику + User ID, и обновить слоты
-        const workRequest = this.workRequestRepository.create({
-          ...dto,
-          status: WorkRequestStatus.WAITING,
-        });
+      //   // тут привязка к работнику + User ID, и обновить слоты
+      //   const workRequest = this.workRequestRepository.create({
+      //     ...dto,
+      //     status: WorkRequestStatus.WAITING,
+      //   });
   
-        // return this.workRequestRepository.save(workRequest);
+      //   // return this.workRequestRepository.save(workRequest);
 
-      });
+      // });
 
 
       // const employee = employees[0];
