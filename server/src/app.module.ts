@@ -13,6 +13,7 @@ import { AuthModule } from './auth/auth.module';
 import { SwaggerConfigService } from './swagger/swagger.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { JwtService } from '@nestjs/jwt';
+import { DataSeedModule } from './data-base/seeders/data-seed.module';
 
 @Module({
   controllers: [], // чтобы заработал контроллер его регаем в модуле
@@ -43,6 +44,7 @@ import { JwtService } from '@nestjs/jwt';
     EmployeeSlotScheduleModule,
     WorkRequestModule,
     AuthModule,
+    DataSeedModule
   ],
 })
 export class AppModule {}

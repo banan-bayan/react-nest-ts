@@ -21,7 +21,7 @@ import { WorkRequestModule } from 'src/work-request/work-request.module';
     forwardRef(() => EmployeeSlotScheduleModule),
     forwardRef(() => EmployeeTypeModule),
     forwardRef(() => WorkRequestModule),
-
+   
     JwtModule.register({
       secret: process.env.PRIVATE_KEY || 'SECRET',
       signOptions: {

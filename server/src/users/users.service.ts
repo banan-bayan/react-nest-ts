@@ -4,6 +4,7 @@ import { User } from './entities/users.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RolesService } from 'src/roles/roles.service';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UsersService {
@@ -11,6 +12,7 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private roleService: RolesService,
+    private authService: AuthService,
   ) {}
 
   async createUser(userDto: CreateUserDto) {
@@ -20,6 +22,7 @@ export class UsersService {
     const user = this.usersRepository.create({ ...userDto, roles: [role] }); 
   
     return await this.usersRepository.save(user);
+    
     } catch(e) {
       
       throw new ConflictException(`Пользователь с таким email "${userDto.email}" уже существует`);
