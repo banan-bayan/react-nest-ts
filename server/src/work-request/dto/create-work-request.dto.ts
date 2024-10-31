@@ -5,6 +5,9 @@ export class CreateWorkRequestDto {
   @ApiProperty({ example: 2, description: 'ID сотрудника' })
   readonly employeeId?: number;
 
+  @ApiProperty({ example: 2, description: 'ID пользователя' })
+  readonly userId: number;
+
   @ApiProperty({ example: '2024-10-08T10:00:00.000Z', description: 'Дата и время начала работы' })
   readonly startDate: Date;
 
