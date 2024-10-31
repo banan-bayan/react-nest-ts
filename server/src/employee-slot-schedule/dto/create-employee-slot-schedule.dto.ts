@@ -8,7 +8,7 @@ export class CreateEmployeeSlotScheduleDto {
   endDate: Date;
 
   @ApiProperty({ example: 1, description: 'ID слота' })
-  id: number;
+  id?: number;
 
   @ApiProperty({ example: 2, description: 'ID сотрудника' })
   employeeId: number;

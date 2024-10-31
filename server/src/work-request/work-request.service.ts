@@ -23,33 +23,33 @@ export class WorkRequestService {
   ) {}
 
   async createWorkRequest(dto: CreateWorkRequestDto) {
-    const {
-      startDate: startDateWorkRequest,
-      employeeWorkTypeIds,
-      employeeId = null,
-    } = dto;
+    const { startDate: startDateWorkRequest, employeeWorkTypeIds, endDate, employeeId = null, userId } = dto;
 
     if (employeeId) {
       const employee = await this.employeeService.getEmployeeById(employeeId);
-      console.log(employee, 'EMP IF HAVE ID')
-      console.log(employee[0].slotSchedules, 'EMP slots')
-      
-
       const existSlot = employee[0].slotSchedules.find(({ startDate }) => {
-        console.log(startDate, 'START DATE')
-        console.log(startDateWorkRequest, 'USER WORK REQUEST')
-        return new Date(startDate).getTime() === new Date(startDateWorkRequest).getTime()
+
+        return new Date(startDate).getTime() === new Date(startDateWorkRequest).getTime();
       });
 
       if (existSlot) {
         throw new NotFoundException('Слот уже занят');
       }
-      
-      // нужно взять userId, и обновить слоты у employee
+      // создаю заявку, но так же нужно обновить другие таблицы, такие как empSlot, 
+      const user = await this.userService.getUserById(userId);
+      const slot =  { startDate: startDateWorkRequest, endDate, employeeId };
+      const employeeWorkType = ['employeeWorkType']
       const workRequest = this.workRequestRepository.create({
         ...dto,
+        user,
+        slot,
+        // employeeWorkType,
         status: WorkRequestStatus.WAITING,
       });
+
+ 
+
+      // await this.slotService.createEmployeeSlotSchedule(slotDto);
 
       return this.workRequestRepository.save(workRequest);
 
