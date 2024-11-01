@@ -67,6 +67,7 @@ export class UsersService {
   }
 
   async getWorkRequestsByUserId(id: number) {
+
     const workRequests = await this.usersRepository.find({
       where: { id },
       relations: ['workRequest'],
@@ -75,5 +76,7 @@ export class UsersService {
     if (!workRequests.length) {
       throw new NotFoundException(`Заявки пользователя с ID ${id} не найдены`);
     }
+
+    return workRequests;
   }
 }

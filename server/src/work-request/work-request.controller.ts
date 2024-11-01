@@ -60,8 +60,8 @@ export class WorkRequestController {
   // @Roles(ERoles.Admin, ERoles.User)
   @ApiOperation({ summary: 'Получение всех заявок пользователя' })
   @ApiResponse({ status: 200, type: [WorkRequest], description: 'Заявки пользователя успешно получены' })
-  @Get('user/:userId')
-  async getUserRequests(@Param('userId', ParseIntPipe) userId: number) {
+  @Get('work-request/:userId')
+  async getUserWorkRequests(@Param('userId', ParseIntPipe) userId: number) {
 
     return this.workRequestService.getUserWorkRequests(userId);
   }

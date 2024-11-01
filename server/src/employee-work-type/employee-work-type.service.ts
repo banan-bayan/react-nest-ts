@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { EmployeeWorkType } from './entities/employee-work-type.entity';
 import { CreateEmployeeWorkTypeDto } from './dto/create-employee-work-type.dto';
 
@@ -17,6 +17,16 @@ export class EmployeeWorkTypeService {
   async getAllEmployeeWorkType() {
     const employeeWorkTypes = await this.employeeWorkTypeRepository.find();
 
+    return employeeWorkTypes;
+  }
+
+  async getEmployeeWorkTypesByIds(ids: number[]) {
+      const employeeWorkTypes = await this.employeeWorkTypeRepository.find({ where: { id: In(ids) }});
+  
+    if (!employeeWorkTypes.length) {
+      throw new NotFoundException(`Типы работ с ID ${ids.join(', ')} не найдены`);
+    }
+  
     return employeeWorkTypes;
   }
 

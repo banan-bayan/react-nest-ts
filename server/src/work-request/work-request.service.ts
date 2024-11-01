@@ -10,103 +10,57 @@ import { UsersService } from 'src/users/users.service';
 import { EmployeeSlotSchedule } from 'src/employee-slot-schedule/entities/employee-slot-schedule.entity';
 import { EmployeeSlotScheduleService } from 'src/employee-slot-schedule/employee-slot-schedule.service';
 import { EmployeeService } from 'src/employee/employee.service';
+import { EmployeeWorkTypeService } from 'src/employee-work-type/employee-work-type.service';
 
 @Injectable()
 export class WorkRequestService {
   constructor(
     @InjectRepository(WorkRequest)
     private workRequestRepository: Repository<WorkRequest>,
-    private employeeTypeService: EmployeeTypeService,
+    private empTypeService: EmployeeTypeService,
     private userService: UsersService,
     private slotService: EmployeeSlotScheduleService,
-    private employeeService: EmployeeService
+    private empService: EmployeeService,
+    private empWorkTypeService: EmployeeWorkTypeService
   ) {}
 
   async createWorkRequest(dto: CreateWorkRequestDto) {
+    try {
     const { startDate: startDateWorkRequest, employeeWorkTypeIds, endDate, employeeId = null, userId } = dto;
 
     if (employeeId) {
-      const employee = await this.employeeService.getEmployeeById(employeeId);
-      const existSlot = employee[0].slotSchedules.find(({ startDate }) => {
+      const employee = await this.empService.getEmployeeById(employeeId);
+      const existSlot = employee.slotSchedules.find(({ startDate }) => {
 
         return new Date(startDate).getTime() === new Date(startDateWorkRequest).getTime();
       });
-
+ 
       if (existSlot) {
         throw new NotFoundException('Слот уже занят');
       }
       // создаю заявку, но так же нужно обновить другие таблицы, такие как empSlot, 
       const user = await this.userService.getUserById(userId);
-      const slot =  { startDate: startDateWorkRequest, endDate, employeeId };
-      const employeeWorkType = ['employeeWorkType']
+      const slot = await this.slotService.createEmployeeSlotSchedule({ startDate: startDateWorkRequest, endDate, employeeId });
+      console.log(slot.id, '=====SLOT=====')
+      const employeeWorkTypes = await this.empWorkTypeService.getEmployeeWorkTypesByIds(employeeWorkTypeIds);
+
       const workRequest = this.workRequestRepository.create({
-        ...dto,
+        id: 422,
         user,
         slot,
-        // employeeWorkType,
+        employeeWorkType: employeeWorkTypes,
         status: WorkRequestStatus.WAITING,
       });
-
+      // console.log(workRequest, '+++ WORK REQUEST')
  
 
-      // await this.slotService.createEmployeeSlotSchedule(slotDto);
 
-      return this.workRequestRepository.save(workRequest);
-
+      return await this.workRequestRepository.save(workRequest);
     } else {
-      const employees =
-        await this.employeeTypeService.getEmployeesTypeByIdes(
-          employeeWorkTypeIds,
-        ); // достал типы выбранные пользователем, вместе с сотрудниками
 
-      console.log(employees, 'EMPS difference TYPEs choose user');
-      
-      // а пользователь может выбирать только один слот времени, на разные типы работ и на разных специалистов ?
-      // const  map = employees.map(async ({ id }) => {
-      //   const employeeSlots = await this.slotService.getEmployeesSlotsSchedules(id);
-
-      //   const existSlot = employeeSlots.find(({ startDate }) => {
-      //     new Date(startDate).getTime() === new Date(startDateWorkRequest).getTime()
-      //   });
-
-      //   if (existSlot) {
-      //     throw new NotFoundException('Слот уже занят');
-      //   }
-
-      //   // тут привязка к работнику + User ID, и обновить слоты
-      //   const workRequest = this.workRequestRepository.create({
-      //     ...dto,
-      //     status: WorkRequestStatus.WAITING,
-      //   });
-  
-      //   // return this.workRequestRepository.save(workRequest);
-
-      // });
-
-
-      // const employee = employees[0];
-      // console.log(employee);
-
-      // const employeeSlots = await this.slotService.getEmployeeSlotsSchedules(
-      //   employee.id,
-      // );
-
-      // const existSlot = employeeSlots.find(
-      //   ({ startDate }) =>
-      //     new Date(startDate).getTime() ===
-      //     new Date(startDateWorkRequest).getTime(),
-      // );
-
-      // if (existSlot) {
-      //   throw new NotFoundException('Слот уже занят');
-      // }
-
-      // const workRequest = this.workRequestRepository.create({
-      //   ...dto,
-      //   status: WorkRequestStatus.WAITING,
-      // });
-
-      // return this.workRequestRepository.save(workRequest);
+    }
+  } catch(e) {
+      console.log(e, 'JAGA-----')
     }
   }
 
@@ -125,7 +79,9 @@ export class WorkRequestService {
   }
 
   async getUserWorkRequests(id: number) {
-    return this.userService.getWorkRequestsByUserId(id);
+    const user = await this.userService.getWorkRequestsByUserId(id);
+    
+    return user[0].workRequest;
   }
 
   async updateWorkRequest(
